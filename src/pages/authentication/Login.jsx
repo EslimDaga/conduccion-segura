@@ -1,7 +1,21 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
+import toast, { Toaster } from "react-hot-toast";
 import * as Yup from "yup";
+import { login } from "./../../features/authenticationSlice";
 
 const Login = () => {
+	const dispatch = useDispatch();
+
+	const { error, isSubmitting } = useSelector(state => state.authentication);
+
+	useEffect(() => {
+		if (error) {
+			toast.error(error);
+		}
+	}, [error]);
+
 	const formik = useFormik({
 		initialValues: {
 			username: "",
@@ -14,7 +28,7 @@ const Login = () => {
 				.min(6, "La contraseña debe tener al menos 6 caracteres"),
 		}),
 		onSubmit: formData => {
-			console.log(formData);
+			dispatch(login(formData));
 		},
 	});
 
@@ -53,10 +67,10 @@ const Login = () => {
 								type="username"
 								placeholder="Ingrese su usuario"
 								className={
-									"w-full px-4 py-5 rounded-xl bg-gray-200 mt-2 border-2 focus:border-solgas-primary focus:bg-white focus:outline-none" +
+									"w-full px-4 py-5 rounded-xl bg-gray-200 mt-2 border-2 focus:bg-white focus:outline-none" +
 									(formik.touched.username && formik.errors.username
 										? " border-red-500 focus:border-red-500"
-										: "")
+										: " focus:border-solgas-primary")
 								}
 								autoComplete="false"
 								onChange={formik.handleChange}
@@ -81,10 +95,10 @@ const Login = () => {
 								type="password"
 								placeholder="Ingrese su contraseña"
 								className={
-									"w-full px-4 py-5 rounded-xl bg-gray-200 mt-2 border-2 focus:border-solgas-primary focus:bg-white focus:outline-none" +
+									"w-full px-4 py-5 rounded-xl bg-gray-200 mt-2 border-2 focus:bg-white focus:outline-none" +
 									(formik.touched.password && formik.errors.password
 										? " border-red-500 focus:border-red-500"
-										: "")
+										: " focus:border-solgas-primary")
 								}
 								autoComplete="false"
 								onChange={formik.handleChange}
@@ -101,28 +115,23 @@ const Login = () => {
 							type="submit"
 							className={
 								"w-full block bg-solgas-primary hover:bg-solgas-primary-dark text-white font-semibold rounded-xl px-4 py-5 mt-6 transition duration-500 ease select-none focus:outline-none focus:shadow-outline" +
-								(formik.isSubmitting ||
+								(isSubmitting ||
 								formik.values.username === "" ||
 								formik.values.password === ""
 									? " flex justify-center items-center opacity-50 cursor-not-allowed"
-									: formik.isValid
-									? " hover:bg-solgas-secondary"
-									: " hover:bg-solgas-primary")
+									: " hover:bg-solgas-primary-dark")
 							}
 							disabled={
-								formik.isSubmitting || !formik.isValid
-									? true
-									: false ||
-									  formik.values.username === "" ||
-									  formik.values.password === ""
+								isSubmitting ||
+								formik.values.username === "" ||
+								formik.values.password === ""
 									? true
 									: false
 							}
 						>
-							{formik.isSubmitting ? "Iniciando sesión ..." : "Iniciar Sesión"}
-							{formik.isSubmitting && (
+							{isSubmitting ? (
 								<svg
-									className="animate-spin -mr-1 ml-3 h-5 w-5 text-white"
+									className="animate-spin -ml-1 mr-3 h-4 w-4 text-white"
 									xmlns="http://www.w3.org/2000/svg"
 									fill="none"
 									viewBox="0 0 24 24"
@@ -138,9 +147,11 @@ const Login = () => {
 									<path
 										className="opacity-75"
 										fill="currentColor"
-										d="M4 12a8 8 0 018-8v1a7 7 0 00-7 7h1z"
+										d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
 									></path>
 								</svg>
+							) : (
+								"Iniciar sesión"
 							)}
 						</button>
 					</form>
@@ -151,6 +162,7 @@ const Login = () => {
 					</p>
 				</div>
 			</div>
+			<Toaster />
 		</section>
 	);
 };
