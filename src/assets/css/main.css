@@ -7,3 +7,21 @@
 body {
 	font-family: "Poppins", sans-serif;
 }
+
+.ag-header-cell-label {
+	justify-content: center;
+}
+
+.ag-cell-wrapper {
+	height: 100%;
+}
+
+.ag-theme-alpine .ag-root-wrapper {
+	border-radius: 0.75rem;
+	--tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+		0 4px 6px -4px rgb(0 0 0 / 0.1);
+	--tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color),
+		0 4px 6px -4px var(--tw-shadow-color);
+	box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
+		var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
