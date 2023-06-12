@@ -284,7 +284,7 @@ const Units = () => {
         )
       }
       <section className="flex flex-col h-screen">
-        <Popover className="flex-1 fixed w-full">
+        <Popover className="flex-1 fixed w-full shadow-lg">
           <div className="mx-auto px-6">
             <div className="flex items-center justify-between border-gray-100 py-6 lg:py-5">
               <div className="flex justify-start lg:w-0 lg:flex-1">
@@ -307,16 +307,16 @@ const Units = () => {
                 <Popover.Group as="nav" className="hidden md:flex gap-5">
                   <Link
                     to="/units"
-                    className="text-base font-medium text-gray-500 hover:text-gray-900"
+                    className="text-base font-medium text-gray-600 hover:text-gray-900"
                   >
                     Unidades
                   </Link>
-                  <a
-                    href="#"
-                    className="text-base font-medium text-gray-500 hover:text-gray-900"
+                  <Link
+                    to="/personal-information"
+                    className="text-base font-medium text-gray-600 hover:text-gray-900"
                   >
-                    Usuarios
-                  </a>
+                    Datos Personales
+                  </Link>
                 </Popover.Group>
                 <a
                   href="#"
@@ -327,7 +327,6 @@ const Units = () => {
                       <span className="sr-only">Open menu</span>
                       <UserCircleIcon className="h-10 w-10" aria-hidden="true" />
                     </Popover.Button>
-
                     <Transition
                       as={Fragment}
                       enter="transition ease-out duration-200"
