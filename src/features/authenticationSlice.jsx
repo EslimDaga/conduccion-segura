@@ -1,6 +1,5 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { AxiosError } from "axios";
 import { loginService } from "../services/authenticationService";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 export const login = createAsyncThunk(
 	"authentication/login",

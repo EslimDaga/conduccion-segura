@@ -1,9 +1,9 @@
+import { login } from "./../../features/authenticationSlice";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import toast, { Toaster } from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
-import { login } from "./../../features/authenticationSlice";
 
 const Login = () => {
 	const dispatch = useDispatch();
@@ -116,15 +116,15 @@ const Login = () => {
 							className={
 								"w-full block bg-solgas-primary hover:bg-solgas-primary-dark text-white font-semibold rounded-xl px-4 py-5 mt-6 transition duration-500 ease select-none focus:outline-none focus:shadow-outline" +
 								(isSubmitting ||
-								formik.values.username === "" ||
-								formik.values.password === ""
+									formik.values.username === "" ||
+									formik.values.password === ""
 									? " flex justify-center items-center opacity-50 cursor-not-allowed"
 									: " hover:bg-solgas-primary-dark")
 							}
 							disabled={
 								isSubmitting ||
-								formik.values.username === "" ||
-								formik.values.password === ""
+									formik.values.username === "" ||
+									formik.values.password === ""
 									? true
 									: false
 							}
