@@ -34,9 +34,24 @@ const Units = () => {
   const [rowData, setRowData] = useState([]);
 
   const [columnDefs, setColumnDefs] = useState([
-    { field: "name", filter: true, headerName: "Nombre", cellStyle: { textAlign: "center" } },
-    { field: "description", filter: true, headerName: "Descripción", cellStyle: { textAlign: "center" } },
-    { field: "last_odometer", filter: true, headerName: "Odómetro", cellStyle: { textAlign: "center" } }
+    {
+      field: "name",
+      filter: true,
+      headerName: "Nombre",
+      cellStyle: { textAlign: "center" },
+    },
+    {
+      field: "description",
+      filter: true,
+      headerName: "Descripción",
+      cellStyle: { textAlign: "center" },
+    },
+    {
+      field: "last_odometer",
+      filter: true,
+      headerName: "Odómetro",
+      cellStyle: { textAlign: "center" },
+    },
   ]);
 
   const defaultColDef = useMemo(() => {
@@ -44,7 +59,7 @@ const Units = () => {
       flex: 1,
       minWidth: 150,
       filter: true,
-    }
+    };
   });
 
   const localeText = useMemo(() => {
