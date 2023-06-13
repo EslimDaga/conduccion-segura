@@ -1,20 +1,27 @@
 import { login } from "./../../features/authenticationSlice";
 import { useEffect } from "react";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 const Login = () => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
-	const { error, isSubmitting } = useSelector(state => state.authentication);
+	const { error, isSubmitting, status } = useSelector(state => state.authentication);
 
 	useEffect(() => {
 		if (error) {
 			toast.error(error);
 		}
-	}, [error]);
+
+		if (status === "succeeded") {
+			toast.success("Bienvenido!");
+			navigate("/dashboard");
+		}
+	}, [error, status]);
 
 	const formik = useFormik({
 		initialValues: {
