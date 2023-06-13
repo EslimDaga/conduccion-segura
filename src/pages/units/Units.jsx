@@ -8,12 +8,14 @@ import {
   XCircleIcon,
   XIcon,
 } from "@heroicons/react/solid/";
-import { Link } from "react-router-dom";
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { Link, json } from "react-router-dom";
+import { useFormik } from "formik";
 import { AgGridReact } from "ag-grid-react";
-import { getUnitsService } from "../../services/unitsService";
+import { createUnitService, getUnitsService } from "../../services/unitsService";
 import { AG_GRID_LOCALE_ES } from "../../i18n/agGridLocale.es"
 import { Popover, Transition } from "@headlessui/react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import * as Yup from "yup";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
@@ -52,6 +54,18 @@ const Units = () => {
       headerName: "Odómetro",
       cellStyle: { textAlign: "center" },
     },
+    {
+      field: "modified",
+      filter: true,
+      headerName: "Modificado",
+      cellStyle: { textAlign: "center" },
+    },
+    {
+      field: "created",
+      filter: true,
+      headerName: "Creado",
+      cellStyle: { textAlign: "center" },
+    }
   ]);
 
   const defaultColDef = useMemo(() => {
@@ -76,9 +90,28 @@ const Units = () => {
 
   useEffect(() => {
     getUnitsService().then((response) => {
-      setRowData(response);
+      setRowData(response.data);
     });
   }, []);
+
+  const formikCreateUnit = useFormik({
+    initialValues: {
+      name: "",
+      description: "",
+      last_odometer: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .required("El nombre es obligatorio")
+        .max(10, "El nombre debe tener menos de 10 caracteres"),
+      last_odometer: Yup.number()
+        .required("El odómetro es obligatorio")
+        .typeError("El odómetro debe ser un número"),
+    }),
+    onSubmit: values => {
+      console.log(values)
+    }
+  });
 
   return (
     <>
@@ -106,7 +139,7 @@ const Units = () => {
               </button>
             </div>
             <div className="p-6">
-              <form>
+              <form onSubmit={formikCreateUnit.handleSubmit}>
                 <div className="space-y-6">
                   <div>
                     <label
@@ -119,13 +152,62 @@ const Units = () => {
                       </span>
                     </label>
                     <input
-                      className="w-full font-semibold px-4 py-4 rounded-xl transition duration-150 ease-out bg-gray-100"
+                      className={
+                        "w-full font-normal px-4 py-4 rounded-xl transition duration-150 ease-out bg-gray-100"
+                      }
                       type="text"
                       name="name"
                       id="name"
                       autoComplete="off"
+                      onChange={formikCreateUnit.handleChange}
                     />
-
+                    {formikCreateUnit.touched.name &&
+                      formikCreateUnit.errors.name ? (
+                      <span className="text-sm font-medium text-red-500">
+                        {formikCreateUnit.errors.name}
+                      </span>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="description"
+                      className="block text-gray-700 dark:text-white font-medium mb-2"
+                    >
+                      Descripción
+                    </label>
+                    <input
+                      className="w-full font-normal px-4 py-4 rounded-xl transition duration-150 ease-out bg-gray-100"
+                      type="text"
+                      name="description"
+                      id="description"
+                      autoComplete="off"
+                      onChange={formikCreateUnit.handleChange}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="last_odometer"
+                      className="block text-gray-700 dark:text-white font-medium mb-2"
+                    >
+                      Odómetro {" "}
+                      <span className="text-md font-normal text-red-500">
+                        *
+                      </span>
+                    </label>
+                    <input
+                      className="w-full font-normal px-4 py-4 rounded-xl transition duration-150 ease-out bg-gray-100"
+                      type="text"
+                      name="last_odometer"
+                      id="last_odometer"
+                      autoComplete="off"
+                      onChange={formikCreateUnit.handleChange}
+                    />
+                    {formikCreateUnit.touched.last_odometer &&
+                      formikCreateUnit.errors.last_odometer ? (
+                      <span className="text-sm font-medium text-red-500">
+                        {formikCreateUnit.errors.last_odometer}
+                      </span>
+                    ) : null}
                   </div>
                   <button
                     className="bg-solgas-primary text-white active:bg-solgas-secondary text-base font-semibold px-4 py-4 rounded-xl hover:shadow-lg outline-none focus:outline-none w-full"
