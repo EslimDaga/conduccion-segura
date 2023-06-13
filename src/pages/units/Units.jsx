@@ -2,18 +2,21 @@ import {
   ChartBarIcon,
   LogoutIcon,
   MenuIcon,
+  PencilAltIcon,
   PlusCircleIcon,
+  TrashIcon,
   UserCircleIcon,
   UserIcon,
   XCircleIcon,
   XIcon,
 } from "@heroicons/react/solid/";
-import { Link, json } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { createUnit, deleteUnit, getUnits, resetErrors } from "../../features/unitSlice";
 import { useFormik } from "formik";
 import { AgGridReact } from "ag-grid-react";
-import { createUnitService, getUnitsService } from "../../services/unitsService";
 import { AG_GRID_LOCALE_ES } from "../../i18n/agGridLocale.es"
 import { Popover, Transition } from "@headlessui/react";
+import { useDispatch, useSelector } from "react-redux";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import * as Yup from "yup";
 import "ag-grid-community/styles/ag-grid.css";
@@ -32,41 +35,80 @@ const solutions = [
 const Units = () => {
 
   const gridRef = useRef();
-  const [showModal, setShowModal] = useState(false);
-  const [rowData, setRowData] = useState([]);
 
-  const [columnDefs, setColumnDefs] = useState([
-    {
-      field: "name",
-      filter: true,
-      headerName: "Nombre",
-      cellStyle: { textAlign: "center" },
-    },
-    {
-      field: "description",
-      filter: true,
-      headerName: "Descripción",
-      cellStyle: { textAlign: "center" },
-    },
-    {
-      field: "last_odometer",
-      filter: true,
-      headerName: "Odómetro",
-      cellStyle: { textAlign: "center" },
-    },
-    {
-      field: "modified",
-      filter: true,
-      headerName: "Modificado",
-      cellStyle: { textAlign: "center" },
-    },
-    {
-      field: "created",
-      filter: true,
-      headerName: "Creado",
-      cellStyle: { textAlign: "center" },
-    }
-  ]);
+  const dispatch = useDispatch();
+
+  const [showModal, setShowModal] = useState(false);
+
+  const {
+    units,
+    error,
+    is_saving,
+    loading_units
+  } = useSelector(state => ({
+    ...state.units,
+  }));
+
+  const columnDefs = useMemo(() => {
+    return [
+      {
+        field: "name",
+        filter: true,
+        headerName: "Nombre",
+        cellStyle: { textAlign: "center" },
+      },
+      {
+        field: "description",
+        filter: true,
+        headerName: "Descripción",
+        cellStyle: { textAlign: "center" },
+      },
+      {
+        field: "last_odometer",
+        filter: true,
+        headerName: "Odómetro",
+        cellStyle: { textAlign: "center" },
+      },
+      {
+        field: "modified",
+        filter: true,
+        headerName: "Modificado",
+        cellStyle: { textAlign: "center" },
+      },
+      {
+        field: "created",
+        filter: true,
+        headerName: "Creado",
+        cellStyle: { textAlign: "center" },
+      },
+      {
+        field: "id",
+        filter: false,
+        headerName: "Acciones",
+        cellStyle: { textAlign: "center" },
+        cellRendererParams: (params) => {
+          id: params.value;
+        },
+        cellRenderer: ({ value }) => {
+          return (
+            <div className="flex gap-2 justify-center items-center">
+              <button className="bg-solgas-primary hover:bg-solgas-secondary text-white font-bold py-2 px-4 rounded-lg">
+                <PencilAltIcon className="h-6 w-6" />
+              </button>
+              <button
+                className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded-lg"
+                onClick={() => {
+                  dispatch(deleteUnit(value));
+                }}
+              >
+                <TrashIcon className="h-6 w-6" />
+              </button>
+            </div>
+          );
+        }
+      }
+    ];
+  });
 
   const defaultColDef = useMemo(() => {
     return {
@@ -89,10 +131,14 @@ const Units = () => {
   }
 
   useEffect(() => {
-    getUnitsService().then((response) => {
-      setRowData(response.data);
-    });
+    dispatch(getUnits());
   }, []);
+
+  useEffect(() => {
+    if (!is_saving) {
+      closeAddUnitModal();
+    }
+  }, [units]);
 
   const formikCreateUnit = useFormik({
     initialValues: {
@@ -109,7 +155,7 @@ const Units = () => {
         .typeError("El odómetro debe ser un número"),
     }),
     onSubmit: values => {
-      console.log(values)
+      dispatch(createUnit(values));
     }
   });
 
@@ -153,18 +199,31 @@ const Units = () => {
                     </label>
                     <input
                       className={
-                        "w-full font-normal px-4 py-4 rounded-xl transition duration-150 ease-out bg-gray-100"
+                        "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
+                        ((formikCreateUnit.touched.name &&
+                          formikCreateUnit.errors.name) ||
+                          error?.errors?.name
+                          ? " border-2 border-red-500"
+                          : is_saving
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="name"
                       id="name"
                       autoComplete="off"
-                      onChange={formikCreateUnit.handleChange}
+                      onChange={(e) => {
+                        formikCreateUnit.handleChange(e);
+                        if (error?.errors?.name) {
+                          dispatch(resetErrors());
+                        }
+                      }}
+                      disabled={is_saving}
                     />
-                    {formikCreateUnit.touched.name &&
-                      formikCreateUnit.errors.name ? (
+                    {(formikCreateUnit.touched.name &&
+                      formikCreateUnit.errors.name) || error?.errors?.name ? (
                       <span className="text-sm font-medium text-red-500">
-                        {formikCreateUnit.errors.name}
+                        {formikCreateUnit.errors.name || error?.errors?.name[0]}
                       </span>
                     ) : null}
                   </div>
@@ -176,12 +235,13 @@ const Units = () => {
                       Descripción
                     </label>
                     <input
-                      className="w-full font-normal px-4 py-4 rounded-xl transition duration-150 ease-out bg-gray-100"
+                      className="w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out  border-2 border-white hover:border-gray-900 focus:border-gray-900"
                       type="text"
                       name="description"
                       id="description"
                       autoComplete="off"
                       onChange={formikCreateUnit.handleChange}
+                      disabled={is_saving}
                     />
                   </div>
                   <div>
@@ -195,12 +255,22 @@ const Units = () => {
                       </span>
                     </label>
                     <input
-                      className="w-full font-normal px-4 py-4 rounded-xl transition duration-150 ease-out bg-gray-100"
+                      className={
+                        "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
+                        ((formikCreateUnit.touched.last_odometer &&
+                          formikCreateUnit.errors.last_odometer) ||
+                          error?.errors?.last_odometer
+                          ? " border-2 border-red-500"
+                          : is_saving
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                      }
                       type="text"
                       name="last_odometer"
                       id="last_odometer"
                       autoComplete="off"
                       onChange={formikCreateUnit.handleChange}
+                      disabled={is_saving}
                     />
                     {formikCreateUnit.touched.last_odometer &&
                       formikCreateUnit.errors.last_odometer ? (
@@ -441,7 +511,7 @@ const Units = () => {
             >
               <AgGridReact
                 ref={gridRef}
-                rowData={rowData}
+                rowData={units}
                 columnDefs={columnDefs}
                 pagination={true}
                 localeText={localeText}
