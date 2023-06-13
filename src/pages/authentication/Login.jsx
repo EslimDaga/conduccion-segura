@@ -19,7 +19,7 @@ const Login = () => {
 
 		if (status === "succeeded") {
 			toast.success("Bienvenido!");
-			navigate("/dashboard");
+			navigate("/units");
 		}
 	}, [error, status]);
 

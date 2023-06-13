@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const jwtInterceptor = axios.create({
-	baseURL: "http://cptdev.segursat.com:8080/web/api/",
+	baseURL: "http://sfdev.segursat.com/web/api",
 	headers: {
 		Authorization: "JWT ",
 	},
@@ -25,11 +25,24 @@ jwtInterceptor.interceptors.response.use(
 	async error => {
 		if (error.response.status === 401) {
 			localStorage.removeItem("user");
-			console.log("401");
+			window.location = "/login";
 		}
 
 		if (error.response.status === 403) {
-			console.log("403");
+			const authData = JSON.parse(localStorage.getItem("user"));
+			const payload = {
+				access: authData.access,
+				refresh: authData.refresh,
+			};
+
+			let apiResponse = await jwtInterceptor.post("/token/refresh/", payload);
+
+			localStorage.setItem(
+				"user",
+				JSON.stringify(Object.assign(authData, apiResponse.data))
+			);
+			error.config.headers["Authorization"] = `JWT ${apiResponse.data.access}`;
+			return axios(error.config);
 		} else {
 			return Promise.reject(error);
 		}
