@@ -11,7 +11,7 @@ import {
   XIcon,
 } from "@heroicons/react/solid/";
 import { Link } from "react-router-dom";
-import { createUnit, deleteUnit, getUnits, resetErrors } from "../../features/unitSlice";
+import { createUnit, deleteUnit, getUnitById, getUnits, resetErrors, updateUnit } from "../../features/unitSlice";
 import { useFormik } from "formik";
 import { AgGridReact } from "ag-grid-react";
 import { AG_GRID_LOCALE_ES } from "../../i18n/agGridLocale.es"
@@ -39,9 +39,11 @@ const Units = () => {
   const dispatch = useDispatch();
 
   const [showModal, setShowModal] = useState(false);
+  const [showModalEdit, setShowModalEdit] = useState(false);
 
   const {
     units,
+    unit,
     error,
     is_saving,
     loading_units
@@ -92,7 +94,12 @@ const Units = () => {
         cellRenderer: ({ value }) => {
           return (
             <div className="flex gap-2 justify-center items-center">
-              <button className="bg-solgas-primary hover:bg-solgas-secondary text-white font-bold py-2 px-4 rounded-lg">
+              <button
+                onClick={() => {
+                  showEditUnitModal(value);
+                }}
+                className="bg-solgas-primary hover:bg-solgas-secondary text-white font-bold py-2 px-4 rounded-lg"
+              >
                 <PencilAltIcon className="h-6 w-6" />
               </button>
               <button
@@ -126,8 +133,21 @@ const Units = () => {
     setShowModal(true);
   }
 
+  const showEditUnitModal = (id) => {
+    setShowModalEdit(true);
+    dispatch(getUnitById(id))
+  }
+
   const closeAddUnitModal = () => {
     setShowModal(false);
+    formikCreateUnit.resetForm();
+    dispatch(resetErrors());
+  }
+
+  const closeEditUnitModal = () => {
+    setShowModalEdit(false);
+    formikUpdateUnit.resetForm();
+    dispatch(resetErrors());
   }
 
   useEffect(() => {
@@ -137,11 +157,22 @@ const Units = () => {
   useEffect(() => {
     if (!is_saving) {
       closeAddUnitModal();
+      closeEditUnitModal();
     }
   }, [units]);
 
+  useEffect(() => {
+    formikUpdateUnit.setValues({
+      id: unit?.id || "",
+      name: unit?.name || "",
+      description: unit?.description || "",
+      last_odometer: unit?.last_odometer || "",
+    })
+  }, [unit]);
+
   const formikCreateUnit = useFormik({
     initialValues: {
+      id: "",
       name: "",
       description: "",
       last_odometer: "",
@@ -156,6 +187,25 @@ const Units = () => {
     }),
     onSubmit: values => {
       dispatch(createUnit(values));
+    }
+  });
+
+  const formikUpdateUnit = useFormik({
+    initialValues: {
+      name: "",
+      description: "",
+      last_odometer: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string()
+        .required("El nombre es obligatorio")
+        .max(10, "El nombre debe tener menos de 10 caracteres"),
+      last_odometer: Yup.number()
+        .required("El odómetro es obligatorio")
+        .typeError("El odómetro debe ser un número"),
+    }),
+    onSubmit: values => {
+      dispatch(updateUnit(values))
     }
   });
 
@@ -276,6 +326,140 @@ const Units = () => {
                       formikCreateUnit.errors.last_odometer ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikCreateUnit.errors.last_odometer}
+                      </span>
+                    ) : null}
+                  </div>
+                  <button
+                    className="bg-solgas-primary text-white active:bg-solgas-secondary text-base font-semibold px-4 py-4 rounded-xl hover:shadow-lg outline-none focus:outline-none w-full"
+                    style={{ transition: "all .15s ease" }}
+                    type="submit"
+                  >
+                    Crear unidad
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+      {showModalEdit && (
+        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 py-5 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl overflow-auto max-w-3xl w-full max-h-full">
+            <div className="z-50 rounded-t-xl bg-white-primary flex items-start justify-between px-6 py-5 max-w-3xl w-full border-b-2 border-white-secondary dark:border-dark-secondary">
+              <h3 className="text-gray-900 dark:text-gray-100 font-medium self-center">
+                Editar Unidad
+              </h3>
+              <button
+                onClick={closeEditUnitModal}
+                className={
+                  "p-1 ml-auto bg-transparent border-0 text-gray-900 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                }
+
+              >
+                <span
+                  className={
+                    "bg-transparent text-gray-500 hover:text-gray-900 dark:text-gray-300 hover:dark:text-gray-100 h-6 w-6 text-xl outline-none focus:outline-none"
+                  }
+                >
+                  <XCircleIcon className="w-6 h-6" />
+                </span>
+              </button>
+            </div>
+            <div className="p-6">
+              <form onSubmit={formikUpdateUnit.handleSubmit}>
+                <div className="space-y-6">
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-gray-700 dark:text-white font-medium mb-2"
+                    >
+                      Placa de la unidad {" "}
+                      <span className="text-md font-normal text-red-500">
+                        *
+                      </span>
+                    </label>
+                    <input
+                      className={
+                        "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
+                        ((formikUpdateUnit.touched.name &&
+                          formikUpdateUnit.errors.name) ||
+                          error?.errors?.name
+                          ? " border-2 border-red-500"
+                          : is_saving
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                      }
+                      type="text"
+                      name="name"
+                      id="name"
+                      autoComplete="off"
+                      onChange={(e) => {
+                        formikUpdateUnit.handleChange(e);
+                        if (error?.errors?.name) {
+                          dispatch(resetErrors());
+                        }
+                      }}
+                      value={formikUpdateUnit.values.name}
+                      disabled={is_saving}
+                    />
+                    {(formikUpdateUnit.touched.name &&
+                      formikUpdateUnit.errors.name) || error?.errors?.name ? (
+                      <span className="text-sm font-medium text-red-500">
+                        {formikUpdateUnit.errors.name || error?.errors?.name[0]}
+                      </span>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="description"
+                      className="block text-gray-700 dark:text-white font-medium mb-2"
+                    >
+                      Descripción
+                    </label>
+                    <input
+                      className="w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out  border-2 border-white hover:border-gray-900 focus:border-gray-900"
+                      type="text"
+                      name="description"
+                      id="description"
+                      autoComplete="off"
+                      onChange={formikUpdateUnit.handleChange}
+                      value={formikUpdateUnit.values.description}
+                      disabled={is_saving}
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="last_odometer"
+                      className="block text-gray-700 dark:text-white font-medium mb-2"
+                    >
+                      Odómetro {" "}
+                      <span className="text-md font-normal text-red-500">
+                        *
+                      </span>
+                    </label>
+                    <input
+                      className={
+                        "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
+                        ((formikUpdateUnit.touched.last_odometer &&
+                          formikUpdateUnit.errors.last_odometer) ||
+                          error?.errors?.last_odometer
+                          ? " border-2 border-red-500"
+                          : is_saving
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                      }
+                      type="text"
+                      name="last_odometer"
+                      id="last_odometer"
+                      autoComplete="off"
+                      onChange={formikUpdateUnit.handleChange}
+                      value={formikUpdateUnit.values.last_odometer}
+                      disabled={is_saving}
+                    />
+                    {formikUpdateUnit.touched.last_odometer &&
+                      formikUpdateUnit.errors.last_odometer ? (
+                      <span className="text-sm font-medium text-red-500">
+                        {formikUpdateUnit.errors.last_odometer}
                       </span>
                     ) : null}
                   </div>
