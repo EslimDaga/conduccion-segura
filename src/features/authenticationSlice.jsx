@@ -34,7 +34,6 @@ const authenticationSlice = createSlice({
 			state.isSubmitting = true;
 		});
 		builder.addCase(login.fulfilled, (state, action) => {
-			console.log(action);
 			state.status = "succeeded";
 			state.isSubmitting = false;
 			state.access = action.payload.access;
