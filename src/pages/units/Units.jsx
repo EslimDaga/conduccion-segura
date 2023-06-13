@@ -9,12 +9,13 @@ import {
   XIcon,
 } from "@heroicons/react/solid/";
 import { Link } from "react-router-dom";
-import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
+import { getUnitsService } from "../../services/unitsService";
+import { AG_GRID_LOCALE_ES } from "../../i18n/agGridLocale.es"
 import { Popover, Transition } from "@headlessui/react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { getUnitsService } from "../../services/unitsService";
 
 const solutions = [
   {
@@ -30,24 +31,25 @@ const Units = () => {
 
   const gridRef = useRef();
   const [showModal, setShowModal] = useState(false);
-  const [rowData, setRowData] = useState();
+  const [rowData, setRowData] = useState([]);
 
   const [columnDefs, setColumnDefs] = useState([
-    { field: 'placa', filter: true, headerName: "Placa" },
-    { field: 'model', filter: true, headerName: "Marca" },
-    { field: 'model', filter: true, headerName: "Modelo" },
-    { field: 'model', filter: true, headerName: "Color" },
-    { field: 'model', filter: true, headerName: "Año" },
-    { field: 'model', filter: true, headerName: "Brevete" },
-    { field: 'model', filter: true, headerName: "Revisión Técnica" },
-    { field: 'model', filter: true, headerName: "Tarjeta de Propiedad" },
-    { field: 'model', filter: true, headerName: "SOAT" },
-    { field: 'model', filter: true, headerName: "Seguro Vehicular" },
+    { field: "name", filter: true, headerName: "Nombre", cellStyle: { textAlign: "center" } },
+    { field: "description", filter: true, headerName: "Descripción", cellStyle: { textAlign: "center" } },
+    { field: "last_odometer", filter: true, headerName: "Odómetro", cellStyle: { textAlign: "center" } }
   ]);
 
-  const defaultColDef = useMemo(() => ({
-    sortable: true
-  }));
+  const defaultColDef = useMemo(() => {
+    return {
+      flex: 1,
+      minWidth: 150,
+      filter: true,
+    }
+  });
+
+  const localeText = useMemo(() => {
+    return AG_GRID_LOCALE_ES;
+  }, []);
 
   const showAddUnitModal = () => {
     setShowModal(true);
@@ -59,7 +61,7 @@ const Units = () => {
 
   useEffect(() => {
     getUnitsService().then((response) => {
-      console.log(response)
+      setRowData(response);
     });
   }, []);
 
@@ -68,216 +70,54 @@ const Units = () => {
       {showModal && (
         <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 py-5 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl overflow-auto max-w-3xl w-full max-h-full">
-            <div className="z-50 rounded-t-xl bg-white flex items-start justify-between px-6 py-4 max-w-3xl w-full border-b-2 border-slate-300">
-              <h3 className="text-gray-900 font-medium self-center">
-                Agregar Unidad
+            <div className="z-50 rounded-t-xl bg-white-primary flex items-start justify-between px-6 py-5 max-w-3xl w-full border-b-2 border-white-secondary dark:border-dark-secondary">
+              <h3 className="text-gray-900 dark:text-gray-100 font-medium self-center">
+                Crear Unidad
               </h3>
               <button
                 onClick={closeAddUnitModal}
-                className="p-1 ml-auto bg-transparent border-0 text-gray-900 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                className={
+                  "p-1 ml-auto bg-transparent border-0 text-gray-900 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                }
+
               >
-                <span className="bg-transparent text-gray-500 hover:text-gray-900 dark:text-gray-300 h-6 w-6 text-xl outline-none focus:outline-none">
+                <span
+                  className={
+                    "bg-transparent text-gray-500 hover:text-gray-900 dark:text-gray-300 hover:dark:text-gray-100 h-6 w-6 text-xl outline-none focus:outline-none"
+                  }
+                >
                   <XCircleIcon className="w-6 h-6" />
                 </span>
               </button>
             </div>
-            <div className="px-6 py-3">
+            <div className="p-6">
               <form>
                 <div className="space-y-6">
-                  <div className="flex gap-2 justify-between">
-                    <div className="w-56">
-                      <label
-                        htmlFor="name"
-                        className="block text-gray-700 font-medium mb-2"
-                      >
-                        Placa{" "}
-                        <span className="text-md font-medium text-red-500">
-                          *
-                        </span>
-                      </label>
-                      <input
-                        className="w-full font-medium p-4 text-dark-primary bg-gray-100 rounded-xl transition duration-150 ease-out"
-                        type="text"
-                        name="name"
-                        id="name"
-                        autoComplete="off"
-                      />
-                    </div>
-                    <div className="w-56">
-                      <label
-                        htmlFor="brand"
-                        className="block text-gray-700 font-medium mb-2"
-                      >
-                        Marca{" "}
-                        <span className="text-md font-medium text-red-500">
-                          *
-                        </span>
-                      </label>
-                      <input
-                        className="w-full font-semibold p-4 text-dark-primary bg-gray-100 rounded-xl transition duration-150 ease-out"
-                        type="text"
-                        name="brand"
-                        id="brand"
-                        autoComplete="off"
-                      />
-                    </div>
-                    <div className="w-56">
-                      <label
-                        htmlFor="model"
-                        className="block text-gray-700 font-medium mb-2"
-                      >
-                        Modelo{" "}
-                        <span className="text-md font-medium text-red-500">
-                          *
-                        </span>
-                      </label>
-                      <input
-                        className="w-full font-semibold p-4 text-dark-primary bg-gray-100 rounded-xl transition duration-150 ease-out"
-                        type="text"
-                        name="model"
-                        id="model"
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex gap-2 justify-between">
-                    <div className="w-56">
-                      <label
-                        htmlFor="color"
-                        className="block text-gray-700 font-medium mb-2"
-                      >
-                        Color{" "}
-                        <span className="text-md font-medium text-red-500">
-                          *
-                        </span>
-                      </label>
-                      <input
-                        className="w-full font-semibold p-4 text-dark-primary bg-gray-100 rounded-xl transition duration-150 ease-out"
-                        type="text"
-                        name="color"
-                        id="color"
-                        autoComplete="off"
-                      />
-                    </div>
-                    <div className="w-56">
-                      <label
-                        htmlFor="year"
-                        className="block text-gray-700 font-medium mb-2"
-                      >
-                        Año{" "}
-                        <span className="text-md font-medium text-red-500">
-                          *
-                        </span>
-                      </label>
-                      <input
-                        className="w-full font-semibold p-4 text-dark-primary bg-gray-100 rounded-xl transition duration-150 ease-out"
-                        type="text"
-                        name="year"
-                        id="year"
-                        autoComplete="off"
-                      />
-                    </div>
-                    <div className="w-60">
-                      <label
-                        htmlFor="license"
-                        className="block text-gray-700 font-medium mb-2"
-                      >
-                        Brevete{" "}
-                        <span className="text-md font-medium text-red-500">
-                          *
-                        </span>
-                      </label>
-                      <input
-                        className="w-full font-semibold p-4 text-dark-primary bg-gray-100 rounded-xl transition duration-150 ease-out"
-                        type="text"
-                        name="license"
-                        id="license"
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex gap-2 justify-between">
-                    <div className="max-w-xs">
-                      <label
-                        htmlFor="technical_review"
-                        className="block text-gray-700 font-medium mb-2"
-                      >
-                        Revisión Técnica{" "}
-                        <span className="text-md font-medium text-red-500">
-                          *
-                        </span>
-                      </label>
-                      <input
-                        className="w-full font-semibold p-4 text-dark-primary bg-gray-100 rounded-xl transition duration-150 ease-out"
-                        type="text"
-                        name="technical_review"
-                        id="technical_review"
-                        autoComplete="off"
-                      />
-                    </div>
-                    <div className="max-w-xs">
-                      <label
-                        htmlFor="property_card"
-                        className="block text-gray-700 font-medium mb-2"
-                      >
-                        Tarjeta de Propiedad{" "}
-                        <span className="text-md font-medium text-red-500">
-                          *
-                        </span>
-                      </label>
-                      <input
-                        className="w-full font-semibold p-4 text-dark-primary bg-gray-100 rounded-xl transition duration-150 ease-out"
-                        type="text"
-                        name="property_card"
-                        id="property_card"
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex gap-2 justify-between">
-                    <div className="max-w-xs">
-                      <label
-                        htmlFor="brand"
-                        className="block text-gray-700 font-medium mb-2"
-                      >
-                        Soat{" "}
-                        <span className="text-md font-medium text-red-500">
-                          *
-                        </span>
-                      </label>
-                      <input
-                        className="w-full font-semibold p-4 text-dark-primary bg-gray-100 rounded-xl transition duration-150 ease-out"
-                        type="text"
-                        name="brand"
-                        id="brand"
-                        autoComplete="off"
-                      />
-                    </div>
-                    <div className="max-w-xs">
-                      <label
-                        htmlFor="brand"
-                        className="block text-gray-700 font-medium mb-2"
-                      >
-                        Seguro vehicular{" "}
-                        <span className="text-md font-medium text-red-500">
-                          *
-                        </span>
-                      </label>
-                      <input
-                        className="w-full font-semibold p-4 text-dark-primary bg-gray-100 rounded-xl transition duration-150 ease-out"
-                        type="text"
-                        name="brand"
-                        id="brand"
-                        autoComplete="off"
-                      />
-                    </div>
+                  <div>
+                    <label
+                      htmlFor="name"
+                      className="block text-gray-700 dark:text-white font-medium mb-2"
+                    >
+                      Placa de la unidad {" "}
+                      <span className="text-md font-normal text-red-500">
+                        *
+                      </span>
+                    </label>
+                    <input
+                      className="w-full font-semibold px-4 py-4 rounded-xl transition duration-150 ease-out bg-gray-100"
+                      type="text"
+                      name="name"
+                      id="name"
+                      autoComplete="off"
+                    />
+
                   </div>
                   <button
-                    className="bg-solgas-primary text-white active:bg-solgas-secondary text-base font-semibold p-4 rounded-xl hover:shadow-lg outline-none focus:outline-none w-full"
+                    className="bg-solgas-primary text-white active:bg-solgas-secondary text-base font-semibold px-4 py-4 rounded-xl hover:shadow-lg outline-none focus:outline-none w-full"
                     style={{ transition: "all .15s ease" }}
                     type="submit"
                   >
-                    Guardar
+                    Crear unidad
                   </button>
                 </div>
               </form>
@@ -504,9 +344,10 @@ const Units = () => {
             >
               <AgGridReact
                 ref={gridRef}
-                rowData={[]}
+                rowData={rowData}
                 columnDefs={columnDefs}
                 pagination={true}
+                localeText={localeText}
                 defaultColDef={defaultColDef}
                 overlayLoadingTemplate={
                   '<span className="ag-overlay-loading-center">Espere mientras se cargan sus filas</span>'
