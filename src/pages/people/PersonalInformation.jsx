@@ -601,7 +601,9 @@ const People = () => {
                         }
                       }}
                       disabled={is_saving}
-                      value={formikUpdateDriver.values.driver_license_expiration_date}
+                      value={
+                        formikUpdateDriver.values.driver_license_expiration_date
+                      }
                     />
                     {(formikUpdateDriver.touched
                       .driver_license_expiration_date &&
