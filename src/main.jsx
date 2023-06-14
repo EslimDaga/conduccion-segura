@@ -1,9 +1,10 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
 import store from "./app/store";
+import ReactDOM from "react-dom/client";
+import Layout from "./template/Layout";
 import { router } from "./router";
-import { RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
+import { RouterProvider } from "react-router-dom";
 import "./assets/css/main.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
