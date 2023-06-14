@@ -53,6 +53,12 @@ const People = () => {
   const columnDefs = useMemo(() => {
     return [
       {
+        field: "id_number",
+        filter: true,
+        headerName: "Número de identificación",
+        cellStyle: { textAlign: "center" },
+      },
+      {
         field: "firstname",
         filter: true,
         headerName: "Nombre",
@@ -659,10 +665,10 @@ const People = () => {
                     Unidades
                   </Link>
                   <Link
-                    to="/personal-information"
+                    to="/drivers"
                     className="text-base font-medium text-gray-600 hover:text-gray-900"
                   >
-                    Datos Personales
+                    Conductores
                   </Link>
                 </Popover.Group>
                 <a
@@ -815,20 +821,20 @@ const People = () => {
                       title=""
                       className="cursor-pointer text-sm font-semibold leading-5 text-gray-400 hover:text-gray-900"
                     >
-                      Datos personales
+                      Conductores
                     </Link>
                   </li>
                 </ul>
               </nav>
               <div className="flex justify-between items-center">
                 <p className="mt-5 text-lg font-semibold leading-7 text-solgas-primary">
-                  Datos personales
+                  Conductores
                 </p>
                 <button
                   onClick={showAddPersonalInformationModal}
                   className="focus:ring outline-none rounded-lg text-white bg-solgas-primary px-8 py-2 font-semibold active:scale-95 hover:opacity-90 flex gap-2 items-center"
                 >
-                  Agregar Datos Personales{" "}
+                  Agregar Conductores{" "}
                   <PlusCircleIcon className="w-6 h-6" />
                 </button>
               </div>

@@ -505,10 +505,10 @@ const Units = () => {
                     Unidades
                   </Link>
                   <Link
-                    to="/personal-information"
+                    to="/drivers"
                     className="text-base font-medium text-gray-600 hover:text-gray-900"
                   >
-                    Datos Personales
+                    Conductores
                   </Link>
                 </Popover.Group>
                 <a
