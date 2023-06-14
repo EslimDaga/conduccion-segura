@@ -49,6 +49,12 @@ const Layout = () => {
                 >
                   Conductores
                 </Link>
+                <Link
+                  to="/initial-inspections"
+                  className="text-base font-medium text-gray-600 hover:text-gray-900"
+                >
+                  Inspecciones iniciales
+                </Link>
               </Popover.Group>
               <a
                 href="#"

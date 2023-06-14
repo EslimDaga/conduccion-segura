@@ -1,9 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login from "./pages/authentication/Login";
 import Units from "./pages/units/Units"
-import Dashboard from "./pages/dashboard/Dashboard";
-import Drivers from "./pages/drivers/Drivers";
 import Layout from "./template/Layout";
+import Drivers from "./pages/drivers/Drivers";
+import Dashboard from "./pages/dashboard/Dashboard";
+import InitialInspections from "./pages/initial-inspections/InitialInspections";
 
 export const router = createBrowserRouter([
 	{
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
 			{
 				path: "/drivers",
 				element: <Drivers />
+			},
+			{
+				path: "/initial-inspections",
+				element: <InitialInspections />
 			}
 		]
 	},
