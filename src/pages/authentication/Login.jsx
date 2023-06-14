@@ -2,8 +2,9 @@ import { login } from "./../../features/authenticationSlice";
 import { useEffect } from "react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import toast, { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import { MailIcon, LockClosedIcon } from "@heroicons/react/solid"
+import toast, { Toaster } from "react-hot-toast";
 import * as Yup from "yup";
 
 const Login = () => {
@@ -58,60 +59,56 @@ const Login = () => {
 						alt="logo-solgas"
 						className="w-3/4 h-3/4 mx-auto"
 					/>
-					<h1 className="text-xl md:text-2xl font-bold leading-tight my-6">
+					<h1 className="text-xl md:text-xl font-semibold leading-tight my-6">
 						Que bueno verte de nuevo! 😃
 					</h1>
 					<form onSubmit={formik.handleSubmit}>
-						<div>
-							<label
-								htmlFor="email"
-								className="block text-gray-700 font-medium"
+						<div class="pt-6">
+							<label for="email" class="font-normal">Correo electronico o Usuario</label>
+							<div
+								class="flex border-2 overflow-hidden items-center mt-2 w-full rounded-xl border-gray-400 transition-all focus-within:shadow-lg focus-within:border-solgas-primary"
 							>
-								Nombre de usuario
-							</label>
-							<input
-								id="username"
-								type="username"
-								placeholder="Ingrese su usuario"
-								className={
-									"w-full px-4 py-5 rounded-xl bg-gray-200 mt-2 border-2 focus:bg-white focus:outline-none" +
-									(formik.touched.username && formik.errors.username
-										? " border-red-500 focus:border-red-500"
-										: " focus:border-solgas-primary")
-								}
-								autoComplete="false"
-								onChange={formik.handleChange}
-								onBlur={formik.handleBlur}
-								value={formik.values.username}
-							/>
+								<div class="flex justify-center items-center pl-6">
+									<MailIcon class="w-6 h-6 pointer-events-none" />
+								</div>
+								<input
+									type="text"
+									id="username"
+									name="username"
+									autoComplete="false"
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+									value={formik.values.username}
+									placeholder="Ingrese su correo electronico o usuario"
+									class="px-4 py-5 w-full focus:outline-none font-normal text-gray-900 border-0 focus:ring-0"
+								/>
+							</div>
 							{formik.touched.username && formik.errors.username ? (
 								<div className="pt-2 text-red-500 text-sm font-medium">
 									{formik.errors.username}
 								</div>
 							) : null}
 						</div>
-						<div className="mt-4">
-							<label
-								htmlFor="password"
-								className="block text-gray-700 font-medium"
+						<div class="pt-6">
+							<label for="password" class="font-normal">Contraseña</label>
+							<div
+								class="flex overflow-hidden items-center mt-2 w-full rounded-xl border-2 border-gray-400 transition-all focus-within:shadow-lg focus-within:border-solgas-primary"
 							>
-								Contraseña
-							</label>
-							<input
-								id="password"
-								type="password"
-								placeholder="Ingrese su contraseña"
-								className={
-									"w-full px-4 py-5 rounded-xl bg-gray-200 mt-2 border-2 focus:bg-white focus:outline-none" +
-									(formik.touched.password && formik.errors.password
-										? " border-red-500 focus:border-red-500"
-										: " focus:border-solgas-primary")
-								}
-								autoComplete="false"
-								onChange={formik.handleChange}
-								onBlur={formik.handleBlur}
-								value={formik.values.password}
-							/>
+								<div class="flex justify-center items-center pl-6">
+									<LockClosedIcon class="w-6 h-6 pointer-events-none" />
+								</div>
+								<input
+									type="password"
+									name="password"
+									id="password"
+									placeholder="Ingrese su contraseña"
+									autoComplete="false"
+									onChange={formik.handleChange}
+									onBlur={formik.handleBlur}
+									value={formik.values.password}
+									class="px-4 py-5 w-full focus:outline-none font-light border-0 focus:ring-0"
+								/>
+							</div>
 							{formik.touched.password && formik.errors.password ? (
 								<div className="pt-2 text-red-500 text-sm font-medium">
 									{formik.errors.password}
@@ -122,16 +119,12 @@ const Login = () => {
 							type="submit"
 							className={
 								"w-full block bg-solgas-primary hover:bg-solgas-primary-dark text-white font-semibold rounded-xl px-4 py-5 mt-6 transition duration-500 ease select-none focus:outline-none focus:shadow-outline" +
-								(isSubmitting ||
-									formik.values.username === "" ||
-									formik.values.password === ""
+								(isSubmitting
 									? " flex justify-center items-center opacity-50 cursor-not-allowed"
 									: " hover:bg-solgas-primary-dark")
 							}
 							disabled={
-								isSubmitting ||
-									formik.values.username === "" ||
-									formik.values.password === ""
+								isSubmitting
 									? true
 									: false
 							}
