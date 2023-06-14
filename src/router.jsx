@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "./pages/authentication/Login";
 import Units from "./pages/units/Units"
 import Dashboard from "./pages/dashboard/Dashboard";
-import PersonalInformation from "./pages/people/PersonalInformation";
+import Drivers from "./pages/drivers/Drivers";
 
 export const router = createBrowserRouter([
 	{
@@ -18,7 +18,7 @@ export const router = createBrowserRouter([
 		element: <Units />
 	},
 	{
-		path: "/personal-information",
-		element: <PersonalInformation />
+		path: "/drivers",
+		element: <Drivers />
 	}
 ]);
