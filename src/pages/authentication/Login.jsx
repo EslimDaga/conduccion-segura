@@ -63,13 +63,13 @@ const Login = () => {
 						Que bueno verte de nuevo! 😃
 					</h1>
 					<form onSubmit={formik.handleSubmit}>
-						<div class="pt-6">
-							<label for="email" class="font-normal">Correo electronico o Usuario</label>
+						<div className="pt-6">
+							<label htmlFor="email" className="font-normal">Correo electronico o Usuario</label>
 							<div
-								class="flex border-2 overflow-hidden items-center mt-2 w-full rounded-xl border-gray-400 transition-all focus-within:shadow-lg focus-within:border-solgas-primary"
+								className="flex border-2 overflow-hidden items-center mt-2 w-full rounded-xl border-gray-400 transition-all focus-within:shadow-lg focus-within:border-solgas-primary"
 							>
-								<div class="flex justify-center items-center pl-6">
-									<MailIcon class="w-6 h-6 pointer-events-none" />
+								<div className="flex justify-center items-center pl-6">
+									<MailIcon className="w-6 h-6 pointer-events-none" />
 								</div>
 								<input
 									type="text"
@@ -80,7 +80,7 @@ const Login = () => {
 									onBlur={formik.handleBlur}
 									value={formik.values.username}
 									placeholder="Ingrese su correo electronico o usuario"
-									class="px-4 py-5 w-full focus:outline-none font-normal text-gray-900 border-0 focus:ring-0"
+									className="px-4 py-5 w-full focus:outline-none font-normal text-gray-900 border-0 focus:ring-0"
 								/>
 							</div>
 							{formik.touched.username && formik.errors.username ? (
@@ -89,13 +89,13 @@ const Login = () => {
 								</div>
 							) : null}
 						</div>
-						<div class="pt-6">
-							<label for="password" class="font-normal">Contraseña</label>
+						<div className="pt-6">
+							<label htmlFor="password" className="font-normal">Contraseña</label>
 							<div
-								class="flex overflow-hidden items-center mt-2 w-full rounded-xl border-2 border-gray-400 transition-all focus-within:shadow-lg focus-within:border-solgas-primary"
+								className="flex overflow-hidden items-center mt-2 w-full rounded-xl border-2 border-gray-400 transition-all focus-within:shadow-lg focus-within:border-solgas-primary"
 							>
-								<div class="flex justify-center items-center pl-6">
-									<LockClosedIcon class="w-6 h-6 pointer-events-none" />
+								<div className="flex justify-center items-center pl-6">
+									<LockClosedIcon className="w-6 h-6 pointer-events-none" />
 								</div>
 								<input
 									type="password"
@@ -106,7 +106,7 @@ const Login = () => {
 									onChange={formik.handleChange}
 									onBlur={formik.handleBlur}
 									value={formik.values.password}
-									class="px-4 py-5 w-full focus:outline-none font-light border-0 focus:ring-0"
+									className="px-4 py-5 w-full focus:outline-none font-light border-0 focus:ring-0"
 								/>
 							</div>
 							{formik.touched.password && formik.errors.password ? (
