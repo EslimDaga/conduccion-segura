@@ -36,7 +36,7 @@ const Layout = () => {
               </Popover.Button>
             </div>
             <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-              <Popover.Group as="nav" className="hidden md:flex gap-5">
+              <Popover.Group as="nav" className="hidden md:flex gap-4">
                 <Link
                   to="/units"
                   className="text-base font-medium text-gray-600 hover:text-gray-900"
@@ -54,6 +54,12 @@ const Layout = () => {
                   className="text-base font-medium text-gray-600 hover:text-gray-900"
                 >
                   Inspecciones iniciales
+                </Link>
+                <Link
+                  to="/search-inspections"
+                  className="text-base font-medium text-gray-600 hover:text-gray-900"
+                >
+                  Buscar inspecciones
                 </Link>
               </Popover.Group>
               <a

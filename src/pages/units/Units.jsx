@@ -55,6 +55,24 @@ const Units = () => {
         cellStyle: { textAlign: "center" },
       },
       {
+        field: "technical_review_expiration_date",
+        filter: true,
+        headerName: "Fecha de vencimiento de la revisión técnica",
+        cellStyle: { textAlign: "center" },
+      },
+      {
+        field: "soat_expiration_date",
+        filter: true,
+        headerName: "Fecha de vencimiento del SOAT",
+        cellStyle: { textAlign: "center" },
+      },
+      {
+        field: "insurance_expiration_date",
+        filter: true,
+        headerName: "Fecha de vencimiento del seguro",
+        cellStyle: { textAlign: "center" },
+      },
+      {
         field: "modified",
         filter: true,
         headerName: "Modificado",
@@ -150,6 +168,9 @@ const Units = () => {
       name: unit?.name || "",
       description: unit?.description || "",
       last_odometer: unit?.last_odometer || "",
+      technical_review_expiration_date: unit?.technical_review_expiration_date || "",
+      soat_expiration_date: unit?.soat_expiration_date || "",
+      insurance_expiration_date: unit?.insurance_expiration_date || "",
     })
   }, [unit]);
 
@@ -159,6 +180,9 @@ const Units = () => {
       name: "",
       description: "",
       last_odometer: "",
+      technical_review_expiration_date: "",
+      soat_expiration_date: "",
+      insurance_expiration_date: "",
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -167,6 +191,15 @@ const Units = () => {
       last_odometer: Yup.number()
         .required("El odómetro es obligatorio")
         .typeError("El odómetro debe ser un número"),
+      technical_review_expiration_date: Yup.date()
+        .required("La fecha de vencimiento de la revisión técnica es obligatoria")
+        .typeError("La fecha de vencimiento de la revisión técnica debe ser una fecha"),
+      soat_expiration_date: Yup.date()
+        .required("La fecha de vencimiento del SOAT es obligatoria")
+        .typeError("La fecha de vencimiento del SOAT debe ser una fecha"),
+      insurance_expiration_date: Yup.date()
+        .required("La fecha de vencimiento del seguro es obligatoria")
+        .typeError("La fecha de vencimiento del seguro debe ser una fecha"),
     }),
     onSubmit: values => {
       dispatch(createUnit(values));
@@ -178,6 +211,9 @@ const Units = () => {
       name: "",
       description: "",
       last_odometer: "",
+      technical_review_expiration_date: "",
+      soat_expiration_date: "",
+      insurance_expiration_date: "",
     },
     validationSchema: Yup.object({
       name: Yup.string()
@@ -186,10 +222,24 @@ const Units = () => {
       last_odometer: Yup.number()
         .required("El odómetro es obligatorio")
         .typeError("El odómetro debe ser un número"),
+      technical_review_expiration_date: Yup.date()
+        .required(
+          "La fecha de vencimiento de la revisión técnica es obligatoria"
+        )
+        .typeError(
+          "La fecha de vencimiento de la revisión técnica debe ser una fecha"
+        ),
+      soat_expiration_date: Yup.date()
+        .required("La fecha de vencimiento del SOAT es obligatoria")
+        .typeError("La fecha de vencimiento del SOAT debe ser una fecha"),
+
+      insurance_expiration_date: Yup.date()
+        .required("La fecha de vencimiento del seguro es obligatoria")
+        .typeError("La fecha de vencimiento del seguro debe ser una fecha"),
     }),
-    onSubmit: values => {
-      dispatch(updateUnit(values))
-    }
+    onSubmit: (values) => {
+      dispatch(updateUnit(values));
+    },
   });
 
   return (
@@ -312,6 +362,111 @@ const Units = () => {
                       </span>
                     ) : null}
                   </div>
+                  <div>
+                    <label
+                      htmlFor="technical_review_expiration_date"
+                      className="block text-gray-700 dark:text-white font-medium mb-2"
+                    >
+                      Fecha de vencimiento de la revisión técnica{" "}
+                      <span className="text-md font-normal text-red-500">
+                        *
+                      </span>
+                    </label>
+                    <input
+                      className={
+                        "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
+                        (formikCreateUnit.touched
+                          .technical_review_expiration_date &&
+                          formikCreateUnit.errors.technical_review_expiration_date
+                          ? " border-2 border-red-500"
+                          : is_saving
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                      }
+                      type="date"
+                      name="technical_review_expiration_date"
+                      id="technical_review_expiration_date"
+                      autoComplete="off"
+                      onChange={formikCreateUnit.handleChange}
+                      disabled={is_saving}
+                    />
+                    {formikCreateUnit.touched.technical_review_expiration_date &&
+                      formikCreateUnit.errors.technical_review_expiration_date ? (
+                      <span className="text-sm font-medium text-red-500">
+                        {formikCreateUnit.errors.technical_review_expiration_date}
+                      </span>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="soat_expiration_date"
+                      className="block text-gray-700 dark:text-white font-medium mb-2"
+                    >
+                      Fecha de vencimiento del SOAT{" "}
+                      <span className="text-md font-normal text-red-500">
+                        *
+                      </span>
+                    </label>
+                    <input
+                      className={
+                        "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
+                        (formikCreateUnit.touched
+                          .soat_expiration_date &&
+                          formikCreateUnit.errors.soat_expiration_date
+                          ? " border-2 border-red-500"
+                          : is_saving
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                      }
+                      type="date"
+                      name="soat_expiration_date"
+                      id="soat_expiration_date"
+                      autoComplete="off"
+                      onChange={formikCreateUnit.handleChange}
+                      disabled={is_saving}
+                    />
+                    {formikCreateUnit.touched.soat_expiration_date &&
+                      formikCreateUnit.errors.soat_expiration_date ? (
+                      <span className="text-sm font-medium text-red-500">
+                        {formikCreateUnit.errors.soat_expiration_date}
+                      </span>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="insurance_expiration_date"
+                      className="block text-gray-700 dark:text-white font-medium mb-2"
+                    >
+                      Fecha de vencimiento del seguro{" "}
+                      <span className="text-md font-normal text-red-500">
+                        *
+                      </span>
+                    </label>
+                    <input
+                      className={
+                        "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
+                        (formikCreateUnit.touched
+                          .insurance_expiration_date &&
+                          formikCreateUnit.errors.insurance_expiration_date
+                          ? " border-2 border-red-500"
+                          : is_saving
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                      }
+                      type="date"
+                      name="insurance_expiration_date"
+                      id="insurance_expiration_date"
+                      autoComplete="off"
+                      onChange={formikCreateUnit.handleChange}
+                      disabled={is_saving}
+                    />
+                    {formikCreateUnit.touched.insurance_expiration_date &&
+                      formikCreateUnit.errors.insurance_expiration_date ? (
+                      <span className="text-sm font-medium text-red-500">
+                        {formikCreateUnit.errors.insurance_expiration_date}
+                      </span>
+                    ) : null}
+                  </div>
                   <button
                     className="bg-solgas-primary text-white active:bg-solgas-secondary text-base font-semibold px-4 py-4 rounded-xl hover:shadow-lg outline-none focus:outline-none w-full"
                     style={{ transition: "all .15s ease" }}
@@ -412,10 +567,10 @@ const Units = () => {
                   </div>
                   <div>
                     <label
-                      htmlFor="last_odometer"
+                      htmlFor="technical_review_expiration_date"
                       className="block text-gray-700 dark:text-white font-medium mb-2"
                     >
-                      Odómetro{" "}
+                      Fecha de vencimiento de la revisión técnica{" "}
                       <span className="text-md font-normal text-red-500">
                         *
                       </span>
@@ -423,26 +578,98 @@ const Units = () => {
                     <input
                       className={
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
-                        ((formikUpdateUnit.touched.last_odometer &&
-                          formikUpdateUnit.errors.last_odometer) ||
-                          error?.errors?.last_odometer
+                        (formikUpdateUnit.touched
+                          .technical_review_expiration_date &&
+                          formikUpdateUnit.errors.technical_review_expiration_date
                           ? " border-2 border-red-500"
                           : is_saving
                             ? "opacity-50 cursor-not-allowed"
                             : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
-                      type="text"
-                      name="last_odometer"
-                      id="last_odometer"
+                      type="date"
+                      name="technical_review_expiration_date"
+                      id="technical_review_expiration_date"
                       autoComplete="off"
                       onChange={formikUpdateUnit.handleChange}
-                      value={formikUpdateUnit.values.last_odometer}
                       disabled={is_saving}
+                      value={formikUpdateUnit.values.technical_review_expiration_date}
                     />
-                    {formikUpdateUnit.touched.last_odometer &&
-                      formikUpdateUnit.errors.last_odometer ? (
+                    {formikUpdateUnit.touched.technical_review_expiration_date &&
+                      formikUpdateUnit.errors.technical_review_expiration_date ? (
                       <span className="text-sm font-medium text-red-500">
-                        {formikUpdateUnit.errors.last_odometer}
+                        {formikUpdateUnit.errors.technical_review_expiration_date}
+                      </span>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="soat_expiration_date"
+                      className="block text-gray-700 dark:text-white font-medium mb-2"
+                    >
+                      Fecha de vencimiento del SOAT{" "}
+                      <span className="text-md font-normal text-red-500">
+                        *
+                      </span>
+                    </label>
+                    <input
+                      className={
+                        "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
+                        (formikUpdateUnit.touched
+                          .soat_expiration_date &&
+                          formikUpdateUnit.errors.soat_expiration_date
+                          ? " border-2 border-red-500"
+                          : is_saving
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                      }
+                      type="date"
+                      name="soat_expiration_date"
+                      id="soat_expiration_date"
+                      autoComplete="off"
+                      onChange={formikUpdateUnit.handleChange}
+                      disabled={is_saving}
+                      value={formikUpdateUnit.values.soat_expiration_date}
+                    />
+                    {formikUpdateUnit.touched.soat_expiration_date &&
+                      formikUpdateUnit.errors.soat_expiration_date ? (
+                      <span className="text-sm font-medium text-red-500">
+                        {formikUpdateUnit.errors.soat_expiration_date}
+                      </span>
+                    ) : null}
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="insurance_expiration_date"
+                      className="block text-gray-700 dark:text-white font-medium mb-2"
+                    >
+                      Fecha de vencimiento del seguro{" "}
+                      <span className="text-md font-normal text-red-500">
+                        *
+                      </span>
+                    </label>
+                    <input
+                      className={
+                        "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
+                        (formikUpdateUnit.touched
+                          .insurance_expiration_date &&
+                          formikUpdateUnit.errors.insurance_expiration_date
+                          ? " border-2 border-red-500"
+                          : is_saving
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                      }
+                      type="date"
+                      name="insurance_expiration_date"
+                      id="insurance_expiration_date"
+                      autoComplete="off"
+                      onChange={formikUpdateUnit.handleChange}
+                      disabled={is_saving}
+                      value={formikUpdateUnit.values.insurance_expiration_date}
+                    />
+                    {formikUpdateUnit.touched.insurance_expiration_date &&
+                      formikUpdateUnit.errors.insurance_expiration_date ? (
+                      <span className="text-sm font-medium text-red-500">
+                        {formikUpdateUnit.errors.insurance_expiration_date}
                       </span>
                     ) : null}
                   </div>

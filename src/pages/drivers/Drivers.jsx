@@ -38,7 +38,7 @@ const People = () => {
       {
         field: "id_number",
         filter: true,
-        headerName: "Número de identificación",
+        headerName: "Número de documento",
         cellStyle: { textAlign: "center" },
       },
       {
@@ -221,7 +221,7 @@ const People = () => {
                       htmlFor="id_number"
                       className="block text-gray-700 dark:text-white font-medium mb-2"
                     >
-                      Id{" "}
+                      Número de documento{" "}
                       <span className="text-md font-normal text-red-500">
                         *
                       </span>
@@ -432,7 +432,7 @@ const People = () => {
                       htmlFor="id_number"
                       className="block text-gray-700 dark:text-white font-medium mb-2"
                     >
-                      Id{" "}
+                      Número de documento{" "}
                       <span className="text-md font-normal text-red-500">
                         *
                       </span>

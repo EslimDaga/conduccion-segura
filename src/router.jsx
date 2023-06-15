@@ -5,6 +5,7 @@ import Layout from "./template/Layout";
 import Drivers from "./pages/drivers/Drivers";
 import Dashboard from "./pages/dashboard/Dashboard";
 import InitialInspections from "./pages/initial-inspections/InitialInspections";
+import SearchInspections from "./pages/reports/SearchInspections";
 
 export const router = createBrowserRouter([
 	{
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
 			{
 				path: "/initial-inspections",
 				element: <InitialInspections />
+			},
+			{
+				path: "/search-inspections",
+				element: <SearchInspections />
 			}
 		]
 	},
