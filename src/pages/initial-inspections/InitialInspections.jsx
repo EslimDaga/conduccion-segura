@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
-import { EyeIcon, XCircleIcon } from "@heroicons/react/solid/";
 import { AgGridReact } from "ag-grid-react";
+import { EyeIcon, XCircleIcon } from "@heroicons/react/solid/";
 import { useDispatch, useSelector } from "react-redux";
+import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet'
 import { useEffect, useMemo, useRef, useState } from "react";
 import { getInitialInspections, getInitialInspectionById } from "../../features/initialInspectionSlice";
+import "leaflet/dist/leaflet.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
@@ -12,11 +14,12 @@ const InitialInspections = () => {
   const gridRef = useRef();
   const dispatch = useDispatch();
 
+  const [position, setPosition] = useState([0, 0])
   const [showModalViewInitialInspection, setShowModalViewInitialInspection] = useState(false);
 
   const {
+    initialInspection,
     initialInspections,
-    initialInspection
   } = useSelector(state => ({
     ...state.initialInspections,
   }));
@@ -108,9 +111,27 @@ const InitialInspections = () => {
     setShowModalViewInitialInspection(false);
   };
 
+  function SetViewOnClick({ coords }) {
+    const map = useMap();
+    map.setView(coords, map.getZoom());
+
+    const marker = new L.marker(coords);
+    marker.addTo(map);
+
+    //Add popup to marker
+    marker.bindPopup(initialInspection?.unit_name).openPopup();
+    return null;
+  }
+
   useEffect(() => {
     dispatch(getInitialInspections());
   }, []);
+
+  useEffect(() => {
+    if (initialInspection) {
+      setPosition([initialInspection.latitude, initialInspection.longitude]);
+    }
+  }, [initialInspection]);
 
   return (
     <>
@@ -139,6 +160,14 @@ const InitialInspections = () => {
               </div>
               <div className="p-6">
                 {initialInspection?.driver_fullname}
+                <MapContainer center={position} zoom={13} scrollWheelZoom={true} className="w-full h-96">
+                  <TileLayer
+                    attribution='&copy; <a href="https://maps.google.com/">Google Maps</a>'
+                    url="http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}"
+                    subdomains={['mt0', 'mt1', 'mt2', 'mt3']}
+                  />
+                  <SetViewOnClick coords={position} />
+                </MapContainer>
               </div>
             </div>
           </div>
