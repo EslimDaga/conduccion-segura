@@ -1,5 +1,4 @@
 import {
-  ChartBarIcon,
   PencilAltIcon,
   PlusCircleIcon,
   TrashIcon,
@@ -207,7 +206,6 @@ const Units = () => {
                 className={
                   "p-1 ml-auto bg-transparent border-0 text-gray-900 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                 }
-
               >
                 <span
                   className={
@@ -226,7 +224,7 @@ const Units = () => {
                       htmlFor="name"
                       className="block text-gray-700 dark:text-white font-medium mb-2"
                     >
-                      Placa de la unidad {" "}
+                      Placa de la unidad{" "}
                       <span className="text-md font-normal text-red-500">
                         *
                       </span>
@@ -255,7 +253,8 @@ const Units = () => {
                       disabled={is_saving}
                     />
                     {(formikCreateUnit.touched.name &&
-                      formikCreateUnit.errors.name) || error?.errors?.name ? (
+                      formikCreateUnit.errors.name) ||
+                      error?.errors?.name ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikCreateUnit.errors.name || error?.errors?.name[0]}
                       </span>
@@ -283,7 +282,7 @@ const Units = () => {
                       htmlFor="last_odometer"
                       className="block text-gray-700 dark:text-white font-medium mb-2"
                     >
-                      Odómetro {" "}
+                      Odómetro{" "}
                       <span className="text-md font-normal text-red-500">
                         *
                       </span>
@@ -338,7 +337,6 @@ const Units = () => {
                 className={
                   "p-1 ml-auto bg-transparent border-0 text-gray-900 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
                 }
-
               >
                 <span
                   className={
@@ -357,7 +355,7 @@ const Units = () => {
                       htmlFor="name"
                       className="block text-gray-700 dark:text-white font-medium mb-2"
                     >
-                      Placa de la unidad {" "}
+                      Placa de la unidad{" "}
                       <span className="text-md font-normal text-red-500">
                         *
                       </span>
@@ -387,7 +385,8 @@ const Units = () => {
                       disabled={is_saving}
                     />
                     {(formikUpdateUnit.touched.name &&
-                      formikUpdateUnit.errors.name) || error?.errors?.name ? (
+                      formikUpdateUnit.errors.name) ||
+                      error?.errors?.name ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikUpdateUnit.errors.name || error?.errors?.name[0]}
                       </span>
@@ -416,7 +415,7 @@ const Units = () => {
                       htmlFor="last_odometer"
                       className="block text-gray-700 dark:text-white font-medium mb-2"
                     >
-                      Odómetro {" "}
+                      Odómetro{" "}
                       <span className="text-md font-normal text-red-500">
                         *
                       </span>
@@ -460,7 +459,7 @@ const Units = () => {
           </div>
         </div>
       )}
-      <main className="h-screen pt-20">
+      <main className="h-screen pt-20 z-0">
         <div className="pt-6 w-full leading-6">
           <div className="mx-auto px-4 sm:px-6 lg:px-8">
             <nav>
@@ -512,9 +511,14 @@ const Units = () => {
               </p>
               <button
                 onClick={showAddUnitModal}
-                className="focus:ring outline-none rounded-lg text-white bg-solgas-primary px-8 py-2 font-semibold active:scale-95 hover:opacity-90 flex gap-2 items-center"
+                class="box-border relative z-30 inline-flex items-center justify-center w-auto px-8 py-3 overflow-hidden font-bold text-white transition-all duration-300 bg-solgas-primary rounded-md cursor-pointer group ring-offset-2 ring-1 ring-solgas-secondary ring-offset-indigo-200 hover:ring-offset-solgas-primary ease focus:outline-none"
               >
-                Agregar Unidad <PlusCircleIcon className="w-6 h-6" />
+                <span class="absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
+                <span class="absolute top-0 left-0 w-20 h-8 -mt-1 -ml-12 transition-all duration-300 ease-out transform -rotate-45 -translate-x-1 bg-white opacity-10 group-hover:translate-x-0"></span>
+                <span class="relative z-20 flex items-center text-sm">
+                  Agregar unidad
+                  <PlusCircleIcon className="h-5 w-5 ml-2" />
+                </span>
               </button>
             </div>
           </div>

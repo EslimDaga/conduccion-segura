@@ -16,7 +16,7 @@ const solutions = [
 const Layout = () => {
   return (
     <main className="flex flex-col h-screen">
-      <Popover className="flex-1 fixed w-full shadow-lg">
+      <Popover className="flex-1 fixed w-full shadow-lg z-10">
         <div className="mx-auto px-6">
           <div className="flex items-center justify-between border-gray-100 py-6 lg:py-5">
             <div className="flex justify-start lg:w-0 lg:flex-1">
