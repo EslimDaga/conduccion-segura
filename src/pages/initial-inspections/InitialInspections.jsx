@@ -153,7 +153,6 @@ const InitialInspections = () => {
     if (initialInspection) {
       setPosition([initialInspection.latitude, initialInspection.longitude]);
       initialInspection?.images?.map((image) => {
-        //Add json to images array
         setImages(images => [...images, {
           original: image.src,
           thumbnail: image.src,
@@ -162,8 +161,6 @@ const InitialInspections = () => {
       })
     }
   }, [initialInspection]);
-
-  console.log(images)
 
   return (
     <>
