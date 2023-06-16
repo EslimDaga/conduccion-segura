@@ -11,21 +11,6 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "react-image-gallery/styles/css/image-gallery.css";
 
-const images = [
-  {
-    original: 'https://picsum.photos/id/1018/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1018/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1015/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1015/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1019/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1019/250/150/',
-  },
-];
-
 function renderItem(item) {
   return (
     <div className='image-gallery-image'>
@@ -168,10 +153,17 @@ const InitialInspections = () => {
     if (initialInspection) {
       setPosition([initialInspection.latitude, initialInspection.longitude]);
       initialInspection?.images?.map((image) => {
-        setImages([...images, { original: image.src, thumbnail: image.src, description: image.description }])
+        //Add json to images array
+        setImages(images => [...images, {
+          original: image.src,
+          thumbnail: image.src,
+          description: image.description
+        }]);
       })
     }
   }, [initialInspection]);
+
+  console.log(images)
 
   return (
     <>
