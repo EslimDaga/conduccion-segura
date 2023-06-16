@@ -594,6 +594,7 @@ const SearchInspections = () => {
                   }
                 >
                   <option value="">Selecciona una unidad</option>
+                  <option value="ALL">Todos</option>
                   {units.map((unit) => (
                     <option key={unit.id} value={unit.name}>
                       {unit.name}
