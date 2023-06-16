@@ -174,6 +174,7 @@ const SearchInspections = () => {
 
   const closeModalViewInitialInspection = () => {
     setShowModalViewInitialInspection(false);
+    setImages([])
   };
 
   function SetViewOnClick({ coords }) {
