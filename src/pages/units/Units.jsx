@@ -179,7 +179,7 @@ const Units = () => {
       id: "",
       name: "",
       description: "",
-      last_odometer: "",
+      last_odometer: 0,
       technical_review_expiration_date: "",
       soat_expiration_date: "",
       insurance_expiration_date: "",
@@ -188,9 +188,6 @@ const Units = () => {
       name: Yup.string()
         .required("El nombre es obligatorio")
         .max(10, "El nombre debe tener menos de 10 caracteres"),
-      last_odometer: Yup.number()
-        .required("El odómetro es obligatorio")
-        .typeError("El odómetro debe ser un número"),
       technical_review_expiration_date: Yup.date()
         .required("La fecha de vencimiento de la revisión técnica es obligatoria")
         .typeError("La fecha de vencimiento de la revisión técnica debe ser una fecha"),
@@ -202,7 +199,15 @@ const Units = () => {
         .typeError("La fecha de vencimiento del seguro debe ser una fecha"),
     }),
     onSubmit: values => {
-      dispatch(createUnit(values));
+      const data = {
+        name: values.name,
+        description: values.description,
+        last_odometer: 0,
+        technical_review_expiration_date: values.technical_review_expiration_date,
+        soat_expiration_date: values.soat_expiration_date,
+        insurance_expiration_date: values.insurance_expiration_date,
+      }
+      dispatch(createUnit(data));
     }
   });
 
@@ -326,41 +331,6 @@ const Units = () => {
                       onChange={formikCreateUnit.handleChange}
                       disabled={is_saving}
                     />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="last_odometer"
-                      className="block text-gray-700 dark:text-white font-medium mb-2"
-                    >
-                      Odómetro{" "}
-                      <span className="text-md font-normal text-red-500">
-                        *
-                      </span>
-                    </label>
-                    <input
-                      className={
-                        "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
-                        ((formikCreateUnit.touched.last_odometer &&
-                          formikCreateUnit.errors.last_odometer) ||
-                          error?.errors?.last_odometer
-                          ? " border-2 border-red-500"
-                          : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
-                      }
-                      type="text"
-                      name="last_odometer"
-                      id="last_odometer"
-                      autoComplete="off"
-                      onChange={formikCreateUnit.handleChange}
-                      disabled={is_saving}
-                    />
-                    {formikCreateUnit.touched.last_odometer &&
-                      formikCreateUnit.errors.last_odometer ? (
-                      <span className="text-sm font-medium text-red-500">
-                        {formikCreateUnit.errors.last_odometer}
-                      </span>
-                    ) : null}
                   </div>
                   <div>
                     <label
