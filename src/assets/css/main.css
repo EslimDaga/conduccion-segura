@@ -40,3 +40,21 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #FFFFFF inset;
   transition: background-color 5000s ease-in-out 0s;
 }
+
+.image-gallery-content .image-gallery-slide .image-gallery-image {
+	display: flex;
+	justify-content: center;
+}
+
+.image-gallery-slide .image-gallery-description {
+    background: rgba(0, 0, 0, 0.4);
+    bottom: 70px;
+    color: #fff;
+    left: 45%;
+    line-height: 1;
+    padding: 10px 20px;
+    position: absolute;
+    white-space: normal;
+    justify-content: center;
+    align-items: center;
+}

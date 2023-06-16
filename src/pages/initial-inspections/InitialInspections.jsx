@@ -2,12 +2,38 @@ import { Link } from "react-router-dom";
 import { AgGridReact } from "ag-grid-react";
 import { EyeIcon, XCircleIcon } from "@heroicons/react/solid/";
 import { useDispatch, useSelector } from "react-redux";
-import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from 'react-leaflet'
 import { useEffect, useMemo, useRef, useState } from "react";
+import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet'
 import { getInitialInspections, getInitialInspectionById } from "../../features/initialInspectionSlice";
+import ImageGallery from 'react-image-gallery';
 import "leaflet/dist/leaflet.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
+import "react-image-gallery/styles/css/image-gallery.css";
+
+const images = [
+  {
+    original: 'https://picsum.photos/id/1018/1000/600/',
+    thumbnail: 'https://picsum.photos/id/1018/250/150/',
+  },
+  {
+    original: 'https://picsum.photos/id/1015/1000/600/',
+    thumbnail: 'https://picsum.photos/id/1015/250/150/',
+  },
+  {
+    original: 'https://picsum.photos/id/1019/1000/600/',
+    thumbnail: 'https://picsum.photos/id/1019/250/150/',
+  },
+];
+
+function renderItem(item) {
+  return (
+    <div className='image-gallery-image'>
+      <img src={item.original} alt={item.description} />
+      <div className='image-gallery-description'>{item.description}</div>
+    </div>
+  );
+}
 
 const InitialInspections = () => {
 
@@ -16,6 +42,7 @@ const InitialInspections = () => {
 
   const [openTab, setOpenTab] = useState(1);
   const [position, setPosition] = useState([0, 0])
+  const [images, setImages] = useState([])
   const [showModalViewInitialInspection, setShowModalViewInitialInspection] = useState(false);
 
   const {
@@ -140,6 +167,9 @@ const InitialInspections = () => {
   useEffect(() => {
     if (initialInspection) {
       setPosition([initialInspection.latitude, initialInspection.longitude]);
+      initialInspection?.images?.map((image) => {
+        setImages([...images, { original: image.src, thumbnail: image.src, description: image.description }])
+      })
     }
   }, [initialInspection]);
 
@@ -230,6 +260,25 @@ const InitialInspections = () => {
                           role="tablist"
                         >
                           Mapa
+                        </a>
+                      </li>
+                      <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
+                        <a
+                          className={
+                            "text-sm font-bold px-5 py-3 shadow-lg rounded block leading-normal " +
+                            (openTab === 4
+                              ? "text-white bg-solgas-primary"
+                              : "text-white-600 bg-white")
+                          }
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setOpenTab(4);
+                          }}
+                          data-toggle="tab"
+                          href="#link4"
+                          role="tablist"
+                        >
+                          Fotos
                         </a>
                       </li>
                     </ul>
@@ -339,15 +388,15 @@ const InitialInspections = () => {
                                   <div className="absolute left-4 h-full border-r-2"></div>
                                   {initialInspection?.questions.map(
                                     (question, index) => (
-                                      <div class="relative mb-4">
-                                        <span class="absolute inline-flex h-6 w-6 items-center justify-center rounded-full bg-solgas-primary p-4 text-center text-base font-semibold text-white shadow">
+                                      <div key={index} className="relative mb-4">
+                                        <span className="absolute inline-flex h-6 w-6 items-center justify-center rounded-full bg-solgas-primary p-4 text-center text-base font-semibold text-white shadow">
                                           C
                                         </span>
-                                        <div class="ml-12 w-auto pt-1">
-                                          <h6 class="text-sm font-semibold text-blue-900">
+                                        <div className="ml-12 w-auto pt-1">
+                                          <h6 className="text-sm font-semibold text-blue-900">
                                             {question?.question}
                                           </h6>
-                                          <p class="mt-1 text-xs text-gray-500">
+                                          <p className="mt-1 text-xs text-gray-500">
                                             {question?.answer}
                                           </p>
                                         </div>
@@ -375,6 +424,12 @@ const InitialInspections = () => {
                               />
                               <SetViewOnClick coords={position} />
                             </MapContainer>
+                          </div>
+                          <div
+                            className={openTab === 4 ? "block" : "hidden"}
+                            id="link4"
+                          >
+                            <ImageGallery items={images} renderItem={renderItem} />
                           </div>
                         </div>
                       </div>
