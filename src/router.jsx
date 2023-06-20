@@ -1,49 +1,80 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/authentication/Login";
 import Units from "./pages/units/Units"
 import Layout from "./template/Layout";
 import Drivers from "./pages/drivers/Drivers";
 import Dashboard from "./pages/dashboard/Dashboard";
-import InitialInspections from "./pages/initial-inspections/InitialInspections";
-import SearchInspections from "./pages/reports/SearchInspections";
 import Maintenance from "./pages/maintenance/Maintenance";
+import ProtectedRoute from "./components/ProtectedRoute";
+import SearchInspections from "./pages/reports/SearchInspections";
+import InitialInspections from "./pages/initial-inspections/InitialInspections";
+
+const user = JSON.parse(localStorage.getItem("user"));
 
 export const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <Login />,
+		element: user ? <Navigate to="/dashboard" /> : <Navigate to="/login" />,
 	},
 	{
 		path: "/login",
-		element: <Login />,
+		element: (
+			<ProtectedRoute accessBy="non-authenticated">
+				<Login />
+			</ProtectedRoute>
+		),
 	},
 	{
 		element: <Layout />,
 		children: [
 			{
 				path: "/dashboard",
-				element: <Dashboard />
+				element: (
+					<ProtectedRoute accessBy="authenticated">
+						<Dashboard />
+					</ProtectedRoute>
+				),
 			},
 			{
 				path: "/units",
-				element: <Units />
+				element: (
+					<ProtectedRoute accessBy="authenticated">
+						<Units />
+					</ProtectedRoute>
+				),
 			},
 			{
 				path: "/drivers",
-				element: <Drivers />
+				element: (
+					<ProtectedRoute accessBy="authenticated">
+						<Drivers />,
+					</ProtectedRoute>
+				),
 			},
 			{
 				path: "/initial-inspections",
-				element: <InitialInspections />
+				element: (
+					<ProtectedRoute accessBy="authenticated">
+						<InitialInspections />,
+					</ProtectedRoute>
+				),
 			},
 			{
 				path: "/search-inspections",
-				element: <SearchInspections />
+				element: (
+					<ProtectedRoute accessBy="authenticated">
+						<SearchInspections />,
+					</ProtectedRoute>
+				),
 			},
 			{
 				path: "/maintenance",
-				element: <Maintenance />
-			}
-		]
+				element: (
+					<ProtectedRoute accessBy="authenticated">
+						<Maintenance />,
+					</ProtectedRoute>
+				),
+			},
+		],
 	},
 ]);
