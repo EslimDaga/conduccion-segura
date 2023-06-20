@@ -16,14 +16,20 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "react-image-gallery/styles/css/image-gallery.css";
 
-function renderItem(item) {
-  return (
-    <div className='image-gallery-image'>
-      <img src={item.original} alt={item.description} />
-      <div className='image-gallery-description'>{item.description}</div>
-    </div>
-  );
-}
+const images1 = [
+  {
+    original: 'https://picsum.photos/id/1018/1000/600/',
+    thumbnail: 'https://picsum.photos/id/1018/250/150/',
+  },
+  {
+    original: 'https://picsum.photos/id/1015/1000/600/',
+    thumbnail: 'https://picsum.photos/id/1015/250/150/',
+  },
+  {
+    original: 'https://picsum.photos/id/1019/1000/600/',
+    thumbnail: 'https://picsum.photos/id/1019/250/150/',
+  },
+];
 
 const SearchInspections = () => {
 
@@ -168,6 +174,7 @@ const SearchInspections = () => {
 
   const closeModalViewInitialInspection = () => {
     setShowModalViewInitialInspection(false);
+    setImages([])
   };
 
   function SetViewOnClick({ coords }) {
@@ -196,7 +203,10 @@ const SearchInspections = () => {
         setImages(images => [...images, {
           original: image.src,
           thumbnail: image.src,
-          description: image.description
+          description: image.description,
+          thumbnailWidth: 320,
+          thumbnailHeight: 174,
+          sizes: "(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw",
         }]);
       })
     }
@@ -458,7 +468,7 @@ const SearchInspections = () => {
                             className={openTab === 4 ? "block" : "hidden"}
                             id="link4"
                           >
-                            <ImageGallery items={images} renderItem={renderItem} />
+                            <ImageGallery items={images} />
                           </div>
                         </div>
                       </div>
