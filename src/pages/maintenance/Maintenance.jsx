@@ -120,7 +120,7 @@ const Maintenance = () => {
           <div className="bg-white rounded-xl overflow-auto max-w-3xl w-full max-h-full">
             <div className="z-50 rounded-t-xl bg-white-primary flex items-start justify-between px-6 py-5 max-w-3xl w-full border-b-2 border-white-secondary dark:border-dark-secondary">
               <h3 className="text-gray-900 dark:text-gray-100 font-medium self-center">
-                Inspección inicial
+                Mantenimiento
               </h3>
               <button
                 onClick={closeModalViewMaintenance}
