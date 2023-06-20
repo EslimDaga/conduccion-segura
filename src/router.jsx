@@ -6,6 +6,7 @@ import Drivers from "./pages/drivers/Drivers";
 import Dashboard from "./pages/dashboard/Dashboard";
 import InitialInspections from "./pages/initial-inspections/InitialInspections";
 import SearchInspections from "./pages/reports/SearchInspections";
+import Maintenance from "./pages/maintenance/Maintenance";
 
 export const router = createBrowserRouter([
 	{
@@ -38,6 +39,10 @@ export const router = createBrowserRouter([
 			{
 				path: "/search-inspections",
 				element: <SearchInspections />
+			},
+			{
+				path: "/maintenance",
+				element: <Maintenance />
 			}
 		]
 	},
