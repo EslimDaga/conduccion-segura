@@ -15,6 +15,7 @@ import "leaflet/dist/leaflet.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "react-image-gallery/styles/css/image-gallery.css";
+import { host } from "../../constants";
 
 const images1 = [
   {
@@ -200,14 +201,17 @@ const SearchInspections = () => {
     if (initialInspection) {
       setPosition([initialInspection.latitude, initialInspection.longitude]);
       initialInspection?.images?.map((image) => {
-        setImages(images => [...images, {
-          original: image.src,
-          thumbnail: image.src,
-          description: image.description,
-          thumbnailWidth: 320,
-          thumbnailHeight: 174,
-          sizes: "(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw",
-        }]);
+        setImages((images) => [
+          ...images,
+          {
+            original: host + image.src,
+            thumbnail: host + image.src,
+            description: image.description,
+            thumbnailWidth: 320,
+            thumbnailHeight: 174,
+            sizes: "(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw",
+          },
+        ]);
       })
     }
   }, [initialInspection]);
@@ -358,7 +362,7 @@ const SearchInspections = () => {
                                     </span>
                                     <div className="ml-12 w-auto py-2">
                                       <h6 className="text-sm font-semibold text-blue-900">
-                                        {initialInspection?.driver_fullname}
+                                        {initialInspection?.driver_fullname || "Sin nombre"}
                                       </h6>
                                     </div>
                                   </div>

@@ -10,6 +10,7 @@ import "leaflet/dist/leaflet.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "react-image-gallery/styles/css/image-gallery.css";
+import { host } from "../../constants";
 
 function renderItem(item) {
   return (
@@ -128,6 +129,7 @@ const InitialInspections = () => {
 
   const closeModalViewInitialInspection = () => {
     setShowModalViewInitialInspection(false);
+    setImages([])
   };
 
   function SetViewOnClick({ coords }) {
@@ -154,8 +156,8 @@ const InitialInspections = () => {
       setPosition([initialInspection.latitude, initialInspection.longitude]);
       initialInspection?.images?.map((image) => {
         setImages(images => [...images, {
-          original: image.src,
-          thumbnail: image.src,
+          original: host + image.src,
+          thumbnail: host + image.src,
           description: image.description
         }]);
       })
@@ -308,7 +310,8 @@ const InitialInspections = () => {
                                     </span>
                                     <div className="ml-12 w-auto py-2">
                                       <h6 className="text-sm font-semibold text-blue-900">
-                                        {initialInspection?.driver_fullname}
+                                        {initialInspection?.driver_fullname ||
+                                          "Sin nombre"}
                                       </h6>
                                     </div>
                                   </div>
@@ -377,7 +380,10 @@ const InitialInspections = () => {
                                   <div className="absolute left-4 h-full border-r-2"></div>
                                   {initialInspection?.questions.map(
                                     (question, index) => (
-                                      <div key={index} className="relative mb-4">
+                                      <div
+                                        key={index}
+                                        className="relative mb-4"
+                                      >
                                         <span className="absolute inline-flex h-6 w-6 items-center justify-center rounded-full bg-solgas-primary p-4 text-center text-base font-semibold text-white shadow">
                                           C
                                         </span>
@@ -418,7 +424,12 @@ const InitialInspections = () => {
                             className={openTab === 4 ? "block" : "hidden"}
                             id="link4"
                           >
-                            <ImageGallery items={images} renderItem={renderItem} />
+                            <ImageGallery
+                              items={images}
+                              renderItem={renderItem}
+                              showFullscreenButton={false}
+                              showPlayButton={false}
+                            />
                           </div>
                         </div>
                       </div>

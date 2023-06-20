@@ -1,0 +1,1 @@
+export const host = "http://sfdev.segursat.com";
