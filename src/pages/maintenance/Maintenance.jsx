@@ -51,6 +51,9 @@ const Maintenance = () => {
         filter: true,
         headerName: "Odómetro",
         cellStyle: { textAlign: "center" },
+        cellRenderer: ({ value }) => {
+          return value + " km";
+        },
       },
       {
         field: "id",
@@ -241,7 +244,7 @@ const Maintenance = () => {
                                     </span>
                                     <div className="ml-12 w-auto py-2">
                                       <h6 className="text-sm font-semibold text-blue-900">
-                                        {maintenance?.odometer}
+                                        {maintenance?.odometer} km
                                       </h6>
                                     </div>
                                   </div>
