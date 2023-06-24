@@ -1,3 +1,4 @@
+import { host } from "../../constants";
 import { Link } from "react-router-dom";
 import { EyeIcon, XCircleIcon } from "@heroicons/react/solid";
 import { AgGridReact } from "ag-grid-react";
@@ -5,7 +6,6 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMaintenanceById, getMaintenances } from "../../features/maintenanceSlice";
 import ImageGallery from "react-image-gallery";
-import { host } from "../../constants";
 
 function renderItem(item) {
   return (

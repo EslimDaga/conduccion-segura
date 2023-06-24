@@ -1,3 +1,4 @@
+import { host } from "../../constants";
 import { Link } from "react-router-dom";
 import { EyeIcon, XCircleIcon } from "@heroicons/react/solid";
 import { getUnits } from "../../features/unitSlice";
@@ -15,7 +16,6 @@ import "leaflet/dist/leaflet.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "react-image-gallery/styles/css/image-gallery.css";
-import { host } from "../../constants";
 
 const images1 = [
   {
