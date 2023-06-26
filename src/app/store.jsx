@@ -5,6 +5,7 @@ import DriverReducer from "../features/driverSlice";
 import AuthenticationReducer from "../features/authenticationSlice";
 import InitialInspectionReducer from "../features/initialInspectionSlice";
 import MaintenanceReducer from "../features/maintenanceSlice"
+import RouteReducer from "../features/routeSlice";
 import SearchInspectionReducer from "../features/searchInspectionSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
@@ -15,6 +16,7 @@ const store = configureStore({
 		drivers: DriverReducer,
 		initialInspections: InitialInspectionReducer,
 		maintenances: MaintenanceReducer,
+		routes: RouteReducer,
 		searchInspections: SearchInspectionReducer,
 	},
 	middleware: [thunk, logger],

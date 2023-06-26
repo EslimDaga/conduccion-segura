@@ -91,6 +91,11 @@ const Layout = () => {
                             Mantenimientos
                           </Link>
                         </Menu.Item>
+                        <Menu.Item>
+                          <Link to="/routes" className="text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                            Rutas
+                          </Link>
+                        </Menu.Item>
                       </div>
                     </Menu.Items>
                   </Transition>

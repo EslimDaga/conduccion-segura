@@ -8,6 +8,7 @@ import Maintenance from "./pages/maintenance/Maintenance";
 import ProtectedRoute from "./components/ProtectedRoute";
 import SearchInspections from "./pages/reports/SearchInspections";
 import InitialInspections from "./pages/initial-inspections/InitialInspections";
+import Routes from "./pages/routes/Routes";
 
 const user = JSON.parse(localStorage.getItem("user"));
 
@@ -75,6 +76,14 @@ export const router = createBrowserRouter([
 					</ProtectedRoute>
 				),
 			},
+			{
+				path: "/routes",
+				element: (
+					<ProtectedRoute accessBy="authenticated">
+						<Routes />,
+					</ProtectedRoute>
+				),
+			}
 		],
 	},
 ]);
