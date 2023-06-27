@@ -39,45 +39,9 @@ const Routes = () => {
         cellStyle: { textAlign: "center" },
       },
       {
-        field: "source_latitude",
-        filter: true,
-        headerName: "Latitud de Origen",
-        cellStyle: { textAlign: "center" },
-      },
-      {
-        field: "source_longitude",
-        filter: true,
-        headerName: "Longitud de Origen",
-        cellStyle: { textAlign: "center" },
-      },
-      {
         field: "source_address",
         filter: true,
         headerName: "Dirección de Origen",
-        cellStyle: { textAlign: "center" },
-      },
-      {
-        field: "destination_latitude",
-        filter: true,
-        headerName: "Latitud de Destino",
-        cellStyle: { textAlign: "center" },
-      },
-      {
-        field: "destination_longitude",
-        filter: true,
-        headerName: "Longitud de Destino",
-        cellStyle: { textAlign: "center" },
-      },
-      {
-        field: "finish_latitude",
-        filter: true,
-        headerName: "Latitud de Fin",
-        cellStyle: { textAlign: "center" },
-      },
-      {
-        field: "finish_longitude",
-        filter: true,
-        headerName: "Longitud de Fin",
         cellStyle: { textAlign: "center" },
       },
       {
@@ -139,13 +103,11 @@ const Routes = () => {
 
   const closeModalViewRoute = () => {
     setShowModalViewRoute(false);
-    setImages([])
+    setPositions([])
   };
 
   function SetViewOnClick({ coords }) {
     const map = useMap();
-
-
 
     if (coords.length > 0) {
       const first_position = [coords[0][0], coords[0][1]]
@@ -325,9 +287,135 @@ const Routes = () => {
                         id="link2"
                       >
                         <div className="relative flex h-full flex-col overflow-hidden bg-white text-gray-600">
-                          <div className="flex-auto p-6">
+                          <div className="flex-auto">
                             <div className="relative flex flex-col justify-center">
-                              <div className="px-6"></div>
+                              <div className="">
+                                <div className="flex-1 rounded-lg">
+                                  <h4 className="text-gray-900 font-bold">
+                                    Detalles de la ruta
+                                  </h4>
+                                  <div className="relative px-4">
+                                    <div className="absolute h-full border border-dashed border-opacity-20 border-secondary"></div>
+                                    <div className="flex items-center w-full my-6 -ml-1.5">
+                                      <div className="w-1/12 z-10">
+                                        <div className="w-3.5 h-3.5 bg-solgas-primary rounded-full"></div>
+                                      </div>
+                                      <div className="w-11/12">
+                                        <p className="text-sm font-medium">
+                                          Latitud de Origen
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                          {route?.source_latitude}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center w-full my-6 -ml-1.5">
+                                      <div className="w-1/12 z-10">
+                                        <div className="w-3.5 h-3.5 bg-solgas-primary rounded-full"></div>
+                                      </div>
+                                      <div className="w-11/12">
+                                        <p className="text-sm font-medium">
+                                          Longitud de Origen
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                          {route?.source_latitude}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center w-full my-6 -ml-1.5">
+                                      <div className="w-1/12 z-10">
+                                        <div className="w-3.5 h-3.5 bg-solgas-primary rounded-full"></div>
+                                      </div>
+                                      <div className="w-11/12">
+                                        <p className="text-sm font-medium">
+                                          Dirección de Origen
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                          {route?.source_address}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center w-full my-6 -ml-1.5">
+                                      <div className="w-1/12 z-10">
+                                        <div className="w-3.5 h-3.5 bg-solgas-primary rounded-full"></div>
+                                      </div>
+                                      <div className="w-11/12">
+                                        <p className="text-sm font-medium">
+                                          Latitud del Destino
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                          {route?.destination_latitude}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center w-full my-6 -ml-1.5">
+                                      <div className="w-1/12 z-10">
+                                        <div className="w-3.5 h-3.5 bg-solgas-primary rounded-full"></div>
+                                      </div>
+                                      <div className="w-11/12">
+                                        <p className="text-sm font-medium">
+                                          Longitud del Destino
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                          {route?.destination_longitude}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center w-full my-6 -ml-1.5">
+                                      <div className="w-1/12 z-10">
+                                        <div className="w-3.5 h-3.5 bg-solgas-primary rounded-full"></div>
+                                      </div>
+                                      <div className="w-11/12">
+                                        <p className="text-sm font-medium">
+                                          Dirección del Destino
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                          {route?.destination_address}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center w-full my-6 -ml-1.5">
+                                      <div className="w-1/12 z-10">
+                                        <div className="w-3.5 h-3.5 bg-solgas-primary rounded-full"></div>
+                                      </div>
+                                      <div className="w-11/12">
+                                        <p className="text-sm font-medium">
+                                          Latitud del Final
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                          {route?.finish_latitude}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center w-full my-6 -ml-1.5">
+                                      <div className="w-1/12 z-10">
+                                        <div className="w-3.5 h-3.5 bg-solgas-primary rounded-full"></div>
+                                      </div>
+                                      <div className="w-11/12">
+                                        <p className="text-sm font-medium">
+                                          Longitud del Final
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                          {route?.finish_longitude}
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div className="flex items-center w-full my-6 -ml-1.5">
+                                      <div className="w-1/12 z-10">
+                                        <div className="w-3.5 h-3.5 bg-solgas-primary rounded-full"></div>
+                                      </div>
+                                      <div className="w-11/12">
+                                        <p className="text-sm font-medium">
+                                          Dirección del Final
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                          {route?.finish_address}
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
