@@ -56,6 +56,24 @@ const Maintenance = () => {
         },
       },
       {
+        field: "odometer",
+        filter: true,
+        headerName: "Odómetro",
+        cellStyle: { textAlign: "center" },
+        cellRenderer: ({ value }) => {
+          return value + " km";
+        },
+      },
+      {
+        field: "next_maintenance_odometer",
+        filter: true,
+        headerName: "Próximo odómetro de mantenimiento",
+        cellStyle: { textAlign: "center" },
+        cellRenderer: ({ value }) => {
+          return value + " km";
+        },
+      },
+      {
         field: "id",
         filter: false,
         headerName: "Acciones",
@@ -234,7 +252,7 @@ const Maintenance = () => {
                                     </span>
                                     <div className="ml-12 w-auto py-2">
                                       <h6 className="text-sm font-semibold text-blue-900">
-                                        {maintenance?.description}
+                                        {maintenance?.description || "Sin descripción"}
                                       </h6>
                                     </div>
                                   </div>
