@@ -38,6 +38,12 @@ const Layout = () => {
             <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
               <Popover.Group as="nav" className="hidden md:flex gap-4">
                 <Link
+                  to="/dashboard"
+                  className="text-base font-medium text-gray-600 hover:text-gray-900"
+                >
+                  Dashboard
+                </Link>
+                <Link
                   to="/units"
                   className="text-base font-medium text-gray-600 hover:text-gray-900"
                 >
