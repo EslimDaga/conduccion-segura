@@ -7,11 +7,13 @@ import InitialInspectionReducer from "../features/initialInspectionSlice";
 import MaintenanceReducer from "../features/maintenanceSlice"
 import RouteReducer from "../features/routeSlice";
 import SearchInspectionReducer from "../features/searchInspectionSlice";
+import DashboardReducer from "../features/dashboardSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
 const store = configureStore({
 	reducer: {
 		authentication: AuthenticationReducer,
+		dashboard: DashboardReducer,
 		units: UnitsReducer,
 		drivers: DriverReducer,
 		initialInspections: InitialInspectionReducer,
