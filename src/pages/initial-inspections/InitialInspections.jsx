@@ -392,7 +392,7 @@ const InitialInspections = () => {
                                             {question?.question}
                                           </h6>
                                           <p className="mt-1 text-xs text-gray-500">
-                                            {question?.answer}
+                                            {question?.answer ? "Si" : "No"}
                                           </p>
                                         </div>
                                       </div>

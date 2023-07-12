@@ -112,14 +112,14 @@ const Routes = () => {
     if (coords.length > 0) {
       const first_position = [coords[0][0], coords[0][1]]
       const first_position_marker = L.circleMarker(first_position, {
-        radius: 12,
+        radius: 10,
         fillColor: "#22c55e",
         color: "#059669",
       }).addTo(map);
 
       const last_position = [coords[coords.length - 1][0], coords[coords.length - 1][1]]
       const last_position_marker = L.circleMarker(last_position, {
-        radius: 12,
+        radius: 10,
         fillColor: "#22d3ee",
         color: "#0891b2",
       }).addTo(map);
@@ -127,7 +127,7 @@ const Routes = () => {
       route?.stops.map((stop) => {
         const stop_position = [stop.latitude, stop.longitude]
         const stop_position_marker = L.circleMarker(stop_position, {
-          radius: 12,
+          radius: 10,
           fillColor: "#f59e0b",
           color: "#b45309",
         }).addTo(map);
@@ -142,7 +142,7 @@ const Routes = () => {
       route?.incidents.map((incident) => {
         const incident_position = [incident.latitude, incident.longitude]
         const incident_position_marker = L.circleMarker(incident_position, {
-          radius: 12,
+          radius: 10,
           fillColor: "#facc15",
           color: "#b45309",
         }).addTo(map);
