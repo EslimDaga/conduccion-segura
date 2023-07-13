@@ -11,48 +11,38 @@ import { getInitialInspectionById } from "../../features/initialInspectionSlice"
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as Yup from "yup";
-import ImageGallery from 'react-image-gallery';
+import ImageGallery from "react-image-gallery";
 import "leaflet/dist/leaflet.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "react-image-gallery/styles/css/image-gallery.css";
 
-const images1 = [
-  {
-    original: 'https://picsum.photos/id/1018/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1018/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1015/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1015/250/150/',
-  },
-  {
-    original: 'https://picsum.photos/id/1019/1000/600/',
-    thumbnail: 'https://picsum.photos/id/1019/250/150/',
-  },
-];
+function renderItem(item) {
+  return (
+    <div className='image-gallery-image'>
+      <img src={item.original} alt={item.description} />
+      <div className='image-gallery-description'>{item.description}</div>
+    </div>
+  );
+}
 
 const SearchInspections = () => {
-
   const gridRef = useRef();
   const dispatch = useDispatch();
 
   const [openTab, setOpenTab] = useState(1);
-  const [position, setPosition] = useState([0, 0])
-  const [images, setImages] = useState([])
-  const [showModalViewInitialInspection, setShowModalViewInitialInspection] = useState(false);
+  const [position, setPosition] = useState([0, 0]);
+  const [images, setImages] = useState([]);
+  const [showModalViewInitialInspection, setShowModalViewInitialInspection] =
+    useState(false);
 
-  const {
-    units,
-  } = useSelector((state) => state.units);
+  const { units } = useSelector((state) => state.units);
 
-  const {
-    initialInspection,
-  } = useSelector((state) => state.initialInspections);
+  const { initialInspection } = useSelector(
+    (state) => state.initialInspections
+  );
 
-  const {
-    inspections,
-  } = useSelector((state) => state.searchInspections)
+  const { inspections } = useSelector((state) => state.searchInspections);
 
   const columnDefs = useMemo(() => {
     return [
@@ -125,8 +115,8 @@ const SearchInspections = () => {
               </button>
             </div>
           );
-        }
-      }
+        },
+      },
     ];
   });
 
@@ -162,9 +152,9 @@ const SearchInspections = () => {
         initial_datetime: initial_datetime_format + ":00",
         final_datetime: final_datetime_format + ":00",
         unit_name: values.unit_name,
-      }
+      };
 
-      dispatch(searchInspections(params))
+      dispatch(searchInspections(params));
     },
   });
 
@@ -175,21 +165,21 @@ const SearchInspections = () => {
 
   const closeModalViewInitialInspection = () => {
     setShowModalViewInitialInspection(false);
-    setImages([])
+    setImages([]);
   };
 
   function SetViewOnClick({ coords }) {
     const map = useMap();
-    map.setView(coords, map.getZoom());
+    map.setView(coords, 20);
 
     const marker = new L.marker(coords);
     marker.addTo(map);
 
-    marker.bindPopup(initialInspection?.unit_name)
+    marker.bindPopup(initialInspection?.unit_name);
 
     setTimeout(() => {
-      map.invalidateSize()
-    }, 0)
+      map.invalidateSize();
+    }, 0);
     return null;
   }
 
@@ -201,18 +191,30 @@ const SearchInspections = () => {
     if (initialInspection) {
       setPosition([initialInspection.latitude, initialInspection.longitude]);
       initialInspection?.images?.map((image) => {
+        let description = "";
+
+        if (image.description === "image1") {
+          description = "Odómetro";
+        } else if (image.description === "image2") {
+          description = "Selfie";
+        } else if (image.description === "image3") {
+          description = "Unidad";
+        } else if (image.description === "image4") {
+          description = "Cinturón de seguridad";
+        }
+
         setImages((images) => [
           ...images,
           {
             original: host + image.src,
             thumbnail: host + image.src,
-            description: image.description,
+            description: description,
             thumbnailWidth: 320,
             thumbnailHeight: 174,
             sizes: "(min-width: 1280px) 33vw, (min-width: 640px) 50vw, 100vw",
           },
         ]);
-      })
+      });
     }
   }, [initialInspection]);
 
@@ -362,7 +364,8 @@ const SearchInspections = () => {
                                     </span>
                                     <div className="ml-12 w-auto py-2">
                                       <h6 className="text-sm font-semibold text-blue-900">
-                                        {initialInspection?.driver_fullname || "Sin nombre"}
+                                        {initialInspection?.driver_fullname ||
+                                          "Sin nombre"}
                                       </h6>
                                     </div>
                                   </div>
@@ -431,7 +434,10 @@ const SearchInspections = () => {
                                   <div className="absolute left-4 h-full border-r-2"></div>
                                   {initialInspection?.questions.map(
                                     (question, index) => (
-                                      <div key={index} className="relative mb-4">
+                                      <div
+                                        key={index}
+                                        className="relative mb-4"
+                                      >
                                         <span className="absolute inline-flex h-6 w-6 items-center justify-center rounded-full bg-solgas-primary p-4 text-center text-base font-semibold text-white shadow">
                                           C
                                         </span>
@@ -440,7 +446,7 @@ const SearchInspections = () => {
                                             {question?.question}
                                           </h6>
                                           <p className="mt-1 text-xs text-gray-500">
-                                            {question?.answer}
+                                            {question?.answer ? "Si" : "No"}
                                           </p>
                                         </div>
                                       </div>
@@ -472,7 +478,12 @@ const SearchInspections = () => {
                             className={openTab === 4 ? "block" : "hidden"}
                             id="link4"
                           >
-                            <ImageGallery items={images} />
+                            <ImageGallery
+                              items={images}
+                              renderItem={renderItem}
+                              showFullscreenButton={false}
+                              showPlayButton={false}
+                            />
                           </div>
                         </div>
                       </div>
@@ -653,6 +664,6 @@ const SearchInspections = () => {
       </main>
     </>
   );
-}
+};
 
 export default SearchInspections;
