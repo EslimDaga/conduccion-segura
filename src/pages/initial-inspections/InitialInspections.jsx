@@ -134,7 +134,7 @@ const InitialInspections = () => {
 
   function SetViewOnClick({ coords }) {
     const map = useMap();
-    map.setView(coords, map.getZoom());
+    map.setView(coords, 19);
 
     const marker = new L.marker(coords);
     marker.addTo(map);
@@ -155,10 +155,23 @@ const InitialInspections = () => {
     if (initialInspection) {
       setPosition([initialInspection.latitude, initialInspection.longitude]);
       initialInspection?.images?.map((image) => {
+
+        let description = ""
+
+        if (image.description === "image1") {
+          description = "Odómetro"
+        } else if (image.description === "image2") {
+          description = "Selfie"
+        } else if (image.description === "image3") {
+          description = "Unidad"
+        } else if (image.description === "image4") {
+          description = "Cinturón de seguridad"
+        }
+
         setImages(images => [...images, {
           original: host + image.src,
           thumbnail: host + image.src,
-          description: image.description
+          description: description
         }]);
       })
     }
@@ -385,7 +398,7 @@ const InitialInspections = () => {
                                         className="relative mb-4"
                                       >
                                         <span className="absolute inline-flex h-6 w-6 items-center justify-center rounded-full bg-solgas-primary p-4 text-center text-base font-semibold text-white shadow">
-                                          C
+                                          {index + 1}
                                         </span>
                                         <div className="ml-12 w-auto pt-1">
                                           <h6 className="text-sm font-semibold text-blue-900">
