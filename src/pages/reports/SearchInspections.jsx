@@ -1,11 +1,11 @@
 import { host } from "../../constants";
 import { Link } from "react-router-dom";
-import { EyeIcon, XCircleIcon } from "@heroicons/react/solid";
 import { getUnits } from "../../features/unitSlice";
 import { useFormik } from "formik";
 import { AgGridReact } from "ag-grid-react";
 import { searchInspections } from "../../features/searchInspectionSlice";
 import { AG_GRID_LOCALE_ES } from "../../i18n/agGridLocale.es";
+import { EyeIcon, XCircleIcon } from "@heroicons/react/solid";
 import { useDispatch, useSelector } from "react-redux";
 import { getInitialInspectionById } from "../../features/initialInspectionSlice";
 import { MapContainer, TileLayer, useMap } from "react-leaflet";
