@@ -1,1 +1,1 @@
-export const host = "http://sfdev.segursat.com";
+export const host = "http://safedriving.segursat.com/";
