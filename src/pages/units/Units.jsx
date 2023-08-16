@@ -47,6 +47,9 @@ const Units = () => {
         filter: true,
         headerName: "Descripción",
         cellStyle: { textAlign: "center" },
+        cellRenderer: (params) => {
+          return params?.value?.length > 0 ? params?.value : "Sin descripción";
+        }
       },
       {
         field: "last_odometer",
