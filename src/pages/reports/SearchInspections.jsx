@@ -170,6 +170,13 @@ const SearchInspections = () => {
 
   function SetViewOnClick({ coords }) {
     const map = useMap();
+
+    map.eachLayer((layer) => {
+      if (layer.options.icon) {
+        layer.remove();
+      }
+    });
+
     map.setView(coords, 20);
 
     const marker = new L.marker(coords);
