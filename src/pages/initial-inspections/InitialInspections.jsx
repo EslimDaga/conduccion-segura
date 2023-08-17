@@ -362,7 +362,6 @@ const InitialInspections = () => {
                                     <div className="ml-12 w-auto py-2">
                                       <h6 className="text-sm font-semibold text-blue-900">
                                         {initialInspection?.duration_time}{" "}
-                                        segundos
                                       </h6>
                                     </div>
                                   </div>
