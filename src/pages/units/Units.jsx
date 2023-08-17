@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createUnit, deleteUnit, getUnitById, getUnits, resetErrors, updateUnit } from "../../features/unitSlice";
 import * as Yup from "yup";
+import Swal from "sweetalert2";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
@@ -109,7 +110,21 @@ const Units = () => {
               <button
                 className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 rounded-lg"
                 onClick={() => {
-                  dispatch(deleteUnit(value));
+                  Swal.fire({
+                    title: "¿Estás seguro?",
+                    text: "¡No podrás revertir esto!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d33",
+                    cancelButtonColor: "#3085d6",
+                    confirmButtonText: "Sí, eliminar",
+                    cancelButtonText: "Cancelar",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      dispatch(deleteUnit(value));
+                    }
+                  }
+                  );
                 }}
               >
                 <TrashIcon className="h-6 w-6" />
