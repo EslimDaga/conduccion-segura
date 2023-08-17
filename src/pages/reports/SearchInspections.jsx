@@ -12,6 +12,7 @@ import { MapContainer, TileLayer, useMap } from "react-leaflet";
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as Yup from "yup";
 import ImageGallery from "react-image-gallery";
+import Select from "react-select";
 import "leaflet/dist/leaflet.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
@@ -35,6 +36,7 @@ const SearchInspections = () => {
   const [images, setImages] = useState([]);
   const [showModalViewInitialInspection, setShowModalViewInitialInspection] =
     useState(false);
+  const [unitsSelect, setUnitsSelect] = useState([]);
 
   const { units } = useSelector((state) => state.units);
 
@@ -191,7 +193,15 @@ const SearchInspections = () => {
   }
 
   useEffect(() => {
-    dispatch(getUnits());
+    dispatch(getUnits()).then((response) => {
+      const newOption = { name: "ALL", value: "Todos" };
+      const units = response.payload.data;
+      const unitsSelect = units.map((unit) => {
+        return { name: unit.name, value: unit.name };
+      });
+
+      setUnitsSelect([newOption, ...unitsSelect]);
+    });
   }, []);
 
   useEffect(() => {
@@ -611,12 +621,35 @@ const SearchInspections = () => {
                   Unidad{" "}
                   <span className="text-md font-normal text-red-500">*</span>
                 </label>
-                <select
-                  name="unit_name"
-                  id="unit_name"
-                  onChange={formikSearchInspections.handleChange}
+                <Select
+                  classNamePrefix="react-select"
+                  is
+                  styles={
+                    {
+                      control: (base, state) => ({
+                        ...base,
+                        height: "58px",
+                        border: "0",
+                        borderRadius: "0.75rem",
+                        backgroundColor: "#F3F4F6",
+                      }),
+                      placeholder: (base, state) => ({
+                        ...base,
+                        display: "none",
+                      }),
+                      indicatorSeparator: (base, state) => ({
+                        ...base,
+                        color: "#000",
+                        backgroundColor: "#000",
+                      }),
+                      dropdownIndicator: (base, state) => ({
+                        ...base,
+                        color: "#000",
+                      }),
+                    }
+                  }
                   className={
-                    "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
+                    "w-full font-normal bg-gray-100 rounded-xl transition duration-150 ease-out " +
                     (formikSearchInspections.touched.unit_name &&
                       formikSearchInspections.errors.unit_name
                       ? " border-2 border-red-500"
@@ -624,15 +657,18 @@ const SearchInspections = () => {
                         ? "opacity-50 cursor-not-allowed"
                         : " border-0 border-white hover:border-gray-900 focus:border-gray-900")
                   }
-                >
-                  <option value="">Selecciona una unidad</option>
-                  <option value="ALL">Todos</option>
-                  {units.map((unit) => (
-                    <option key={unit.id} value={unit.name}>
-                      {unit.name}
-                    </option>
-                  ))}
-                </select>
+                  options={
+                    unitsSelect
+                  }
+                  getOptionLabel={(option) => option.name}
+                  getOptionValue={(option) => option.name}
+                  onChange={(option) => {
+                    formikSearchInspections.setFieldValue(
+                      "unit_name",
+                      option.name
+                    );
+                  }}
+                />
               </div>
               <div className="w-24">
                 <button
