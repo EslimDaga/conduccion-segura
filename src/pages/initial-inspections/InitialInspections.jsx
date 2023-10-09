@@ -3,9 +3,12 @@ import { AgGridReact } from "ag-grid-react";
 import { EyeIcon, XCircleIcon } from "@heroicons/react/solid/";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet'
-import { getInitialInspections, getInitialInspectionById } from "../../features/initialInspectionSlice";
-import ImageGallery from 'react-image-gallery';
+import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
+import {
+  getInitialInspections,
+  getInitialInspectionById,
+} from "../../features/initialInspectionSlice";
+import ImageGallery from "react-image-gallery";
 import "leaflet/dist/leaflet.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
@@ -14,27 +17,24 @@ import { host } from "../../constants";
 
 function renderItem(item) {
   return (
-    <div className='image-gallery-image'>
+    <div className="image-gallery-image">
       <img src={item.original} alt={item.description} />
-      <div className='image-gallery-description'>{item.description}</div>
+      <div className="image-gallery-description">{item.description}</div>
     </div>
   );
 }
 
 const InitialInspections = () => {
-
   const gridRef = useRef();
   const dispatch = useDispatch();
 
   const [openTab, setOpenTab] = useState(1);
-  const [position, setPosition] = useState([0, 0])
-  const [images, setImages] = useState([])
-  const [showModalViewInitialInspection, setShowModalViewInitialInspection] = useState(false);
+  const [position, setPosition] = useState([0, 0]);
+  const [images, setImages] = useState([]);
+  const [showModalViewInitialInspection, setShowModalViewInitialInspection] =
+    useState(false);
 
-  const {
-    initialInspection,
-    initialInspections,
-  } = useSelector(state => ({
+  const { initialInspection, initialInspections } = useSelector((state) => ({
     ...state.initialInspections,
   }));
 
@@ -109,10 +109,10 @@ const InitialInspections = () => {
               </button>
             </div>
           );
-        }
-      }
+        },
+      },
     ];
-  })
+  });
 
   const defaultColDef = useMemo(() => {
     return {
@@ -129,7 +129,7 @@ const InitialInspections = () => {
 
   const closeModalViewInitialInspection = () => {
     setShowModalViewInitialInspection(false);
-    setImages([])
+    setImages([]);
   };
 
   function SetViewOnClick({ coords }) {
@@ -146,11 +146,11 @@ const InitialInspections = () => {
     const marker = new L.marker(coords);
     marker.addTo(map);
 
-    marker.bindPopup(initialInspection?.unit_name)
+    marker.bindPopup(initialInspection?.unit_name);
 
     setTimeout(() => {
-      map.invalidateSize()
-    }, 0)
+      map.invalidateSize();
+    }, 0);
     return null;
   }
 
@@ -162,25 +162,29 @@ const InitialInspections = () => {
     if (initialInspection) {
       setPosition([initialInspection.latitude, initialInspection.longitude]);
       initialInspection?.images?.map((image) => {
-
-        let description = ""
+        let description = "";
 
         if (image.description === "image1") {
-          description = "Odómetro"
+          description = "Odómetro";
         } else if (image.description === "image2") {
-          description = "Selfie"
+          description = "Selfie";
         } else if (image.description === "image3") {
-          description = "Unidad"
+          description = "Accesorios mecánicos y de seguridad";
         } else if (image.description === "image4") {
-          description = "Cinturón de seguridad"
+          description = "Foto diagonal de la unidad";
+        } else if (image.description === "image5") {
+          description = "Cinturón de seguridad";
         }
 
-        setImages(images => [...images, {
-          original: host + image.src,
-          thumbnail: host + image.src,
-          description: description
-        }]);
-      })
+        setImages((images) => [
+          ...images,
+          {
+            original: host + image.src,
+            thumbnail: host + image.src,
+            description: description,
+          },
+        ]);
+      });
     }
   }, [initialInspection]);
 
@@ -533,6 +537,6 @@ const InitialInspections = () => {
       </main>
     </>
   );
-}
+};
 
 export default InitialInspections;
