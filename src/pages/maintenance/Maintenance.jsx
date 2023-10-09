@@ -4,14 +4,17 @@ import { EyeIcon, XCircleIcon } from "@heroicons/react/solid";
 import { AgGridReact } from "ag-grid-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMaintenanceById, getMaintenances } from "../../features/maintenanceSlice";
+import {
+  getMaintenanceById,
+  getMaintenances,
+} from "../../features/maintenanceSlice";
 import ImageGallery from "react-image-gallery";
 
 function renderItem(item) {
   return (
-    <div className='image-gallery-image'>
+    <div className="image-gallery-image">
       <img src={item.original} alt={item.description} />
-      <div className='image-gallery-description'>{item.description}</div>
+      <div className="image-gallery-description">{item.description}</div>
     </div>
   );
 }
@@ -20,11 +23,14 @@ const Maintenance = () => {
   const gridRef = useRef();
   const dispatch = useDispatch();
 
-  const [showModalViewMaintenance, setShowModalViewMaintenance] = useState(false);
+  const [showModalViewMaintenance, setShowModalViewMaintenance] =
+    useState(false);
   const [openTab, setOpenTab] = useState(1);
   const [images, setImages] = useState([]);
 
-  const { maintenances, maintenance } = useSelector((state) => state.maintenances)
+  const { maintenances, maintenance } = useSelector(
+    (state) => state.maintenances
+  );
 
   const columnDefs = useMemo(() => {
     return [
@@ -94,10 +100,10 @@ const Maintenance = () => {
               </button>
             </div>
           );
-        }
-      }
+        },
+      },
     ];
-  })
+  });
 
   const defaultColDef = useMemo(() => {
     return {
@@ -123,14 +129,57 @@ const Maintenance = () => {
 
   useEffect(() => {
     if (maintenance?.images) {
-      let images = maintenance.images.map((image) => {
-        return {
-          original: host + image.src,
-          thumbnail: host + image.src,
-          description: image.description,
-        }
-      });
-      setImages(images);
+      console.log(maintenance?.images.length);
+
+      if (maintenance?.images.length < 2) {
+        maintenance?.images?.map((image) => {
+          let description = "";
+
+          if (image.description === "image1") {
+            description = "Odómetro";
+          }
+
+          setImages((images) => [
+            ...images,
+            {
+              original: host + image.src,
+              thumbnail: host + image.src,
+              description: description,
+            },
+          ]);
+        });
+      }
+
+      if (maintenance?.images.length > 1) {
+        maintenance?.images?.map((image) => {
+          let description = "";
+
+          if (image?.description === "image1") {
+            description = "Odómetro";
+          }
+
+          if (image?.description === "image2") {
+            description = "Evidencia 1";
+          }
+
+          if (image?.description === "image3") {
+            description = "Evidencia 2";
+          }
+
+          if (image?.description === "image4") {
+            description = "Evidencia 3";
+          }
+
+          setImages((images) => [
+            ...images,
+            {
+              original: host + image.src,
+              thumbnail: host + image.src,
+              description: description,
+            },
+          ]);
+        });
+      }
     }
   }, [maintenance]);
 
@@ -252,7 +301,8 @@ const Maintenance = () => {
                                     </span>
                                     <div className="ml-12 w-auto py-2">
                                       <h6 className="text-sm font-semibold text-blue-900">
-                                        {maintenance?.description || "Sin descripción"}
+                                        {maintenance?.description ||
+                                          "Sin descripción"}
                                       </h6>
                                     </div>
                                   </div>
@@ -372,7 +422,7 @@ const Maintenance = () => {
         </div>
       </main>
     </>
-  )
-}
+  );
+};
 
 export default Maintenance;
