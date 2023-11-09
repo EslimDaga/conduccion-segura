@@ -5,28 +5,24 @@ import { EyeIcon, XCircleIcon } from "@heroicons/react/solid/";
 import { getRoutes, getRouteById } from "../../features/routeSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet'
-import { AntPath, antPath } from 'leaflet-ant-path';
+import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
+import { AntPath, antPath } from "leaflet-ant-path";
 import "leaflet/dist/leaflet.css";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "react-image-gallery/styles/css/image-gallery.css";
 
 const Routes = () => {
-
   const gridRef = useRef();
   const dispatch = useDispatch();
 
   const [openTab, setOpenTab] = useState(1);
-  const [position, setPosition] = useState([0, 0])
-  const [positions, setPositions] = useState([])
-  const [images, setImages] = useState([])
+  const [position, setPosition] = useState([0, 0]);
+  const [positions, setPositions] = useState([]);
+  const [images, setImages] = useState([]);
   const [showModalViewRoute, setShowModalViewRoute] = useState(false);
 
-  const {
-    route,
-    routes,
-  } = useSelector(state => ({
+  const { route, routes } = useSelector((state) => ({
     ...state.routes,
   }));
 
@@ -48,12 +44,6 @@ const Routes = () => {
         field: "finish_address",
         filter: true,
         headerName: "Dirección de Fin",
-        cellStyle: { textAlign: "center" },
-      },
-      {
-        field: "modified",
-        filter: true,
-        headerName: "Modificado",
         cellStyle: { textAlign: "center" },
       },
       {
@@ -83,10 +73,10 @@ const Routes = () => {
               </button>
             </div>
           );
-        }
-      }
+        },
+      },
     ];
-  })
+  });
 
   const defaultColDef = useMemo(() => {
     return {
@@ -103,21 +93,24 @@ const Routes = () => {
 
   const closeModalViewRoute = () => {
     setShowModalViewRoute(false);
-    setPositions([])
+    setPositions([]);
   };
 
   function SetViewOnClick({ coords }) {
     let map = useMap();
 
     if (coords.length > 0) {
-      const first_position = [coords[0][0], coords[0][1]]
+      const first_position = [coords[0][0], coords[0][1]];
       const first_position_marker = L.circleMarker(first_position, {
         radius: 10,
         fillColor: "#22c55e",
         color: "#059669",
       }).addTo(map);
 
-      const last_position = [coords[coords.length - 1][0], coords[coords.length - 1][1]]
+      const last_position = [
+        coords[coords.length - 1][0],
+        coords[coords.length - 1][1],
+      ];
       const last_position_marker = L.circleMarker(last_position, {
         radius: 10,
         fillColor: "#22d3ee",
@@ -125,7 +118,7 @@ const Routes = () => {
       }).addTo(map);
 
       route?.stops.map((stop) => {
-        const stop_position = [stop.latitude, stop.longitude]
+        const stop_position = [stop.latitude, stop.longitude];
         const stop_position_marker = L.circleMarker(stop_position, {
           radius: 10,
           fillColor: "#f59e0b",
@@ -137,10 +130,10 @@ const Routes = () => {
           ${stop?.address}
         `
         );
-      })
+      });
 
       route?.incidents.map((incident) => {
-        const incident_position = [incident.latitude, incident.longitude]
+        const incident_position = [incident.latitude, incident.longitude];
         const incident_position_marker = L.circleMarker(incident_position, {
           radius: 10,
           fillColor: "#facc15",
@@ -152,7 +145,7 @@ const Routes = () => {
           ${incident?.address}
         `
         );
-      })
+      });
 
       first_position_marker.bindPopup(
         `
@@ -175,17 +168,14 @@ const Routes = () => {
       );
 
       const path = antPath(positions, {
-        "delay": 800,
-        "dashArray": [
-          10,
-          20
-        ],
-        "weight": 4,
-        "color": "#0000FF",
-        "pulseColor": "#FFFFFF",
-        "paused": false,
-        "reverse": false,
-        "hardwareAccelerated": true
+        delay: 800,
+        dashArray: [10, 20],
+        weight: 4,
+        color: "#0000FF",
+        pulseColor: "#FFFFFF",
+        paused: false,
+        reverse: false,
+        hardwareAccelerated: true,
       }).addTo(map);
 
       map.fitBounds(path.getBounds());
@@ -194,21 +184,21 @@ const Routes = () => {
     }
 
     setTimeout(() => {
-      map.invalidateSize()
-    }, 0)
+      map.invalidateSize();
+    }, 0);
     return null;
   }
 
   useEffect(() => {
-    dispatch(getRoutes())
+    dispatch(getRoutes());
   }, []);
 
   useEffect(() => {
     if (route?.positions) {
       route?.positions.map((position) => {
-        const data = [position.latitude, position.longitude]
-        setPositions(positions => [...positions, data])
-      })
+        const data = [position.latitude, position.longitude];
+        setPositions((positions) => [...positions, data]);
+      });
     }
   }, [route]);
 
@@ -553,6 +543,6 @@ const Routes = () => {
       </main>
     </>
   );
-}
+};
 
 export default Routes;

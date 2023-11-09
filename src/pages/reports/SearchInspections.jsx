@@ -20,9 +20,9 @@ import "react-image-gallery/styles/css/image-gallery.css";
 
 function renderItem(item) {
   return (
-    <div className='image-gallery-image'>
+    <div className="image-gallery-image">
       <img src={item.original} alt={item.description} />
-      <div className='image-gallery-description'>{item.description}</div>
+      <div className="image-gallery-description">{item.description}</div>
     </div>
   );
 }
@@ -82,12 +82,6 @@ const SearchInspections = () => {
         field: "duration_time",
         filter: true,
         headerName: "Tiempo de duración",
-        cellStyle: { textAlign: "center" },
-      },
-      {
-        field: "modified",
-        filter: true,
-        headerName: "Modificado",
         cellStyle: { textAlign: "center" },
       },
       {
@@ -575,11 +569,11 @@ const SearchInspections = () => {
                   className={
                     "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                     (formikSearchInspections.touched.initial_datetime &&
-                      formikSearchInspections.errors.initial_datetime
+                    formikSearchInspections.errors.initial_datetime
                       ? " border-2 border-red-500"
                       : false
-                        ? "opacity-50 cursor-not-allowed"
-                        : " border-0 border-white hover:border-gray-900 focus:border-gray-900")
+                      ? "opacity-50 cursor-not-allowed"
+                      : " border-0 border-white hover:border-gray-900 focus:border-gray-900")
                   }
                   type="datetime-local"
                   name="initial_datetime"
@@ -600,11 +594,11 @@ const SearchInspections = () => {
                   className={
                     "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                     (formikSearchInspections.touched.final_datetime &&
-                      formikSearchInspections.errors.final_datetime
+                    formikSearchInspections.errors.final_datetime
                       ? " border-2 border-red-500"
                       : false
-                        ? "opacity-50 cursor-not-allowed"
-                        : " border-0 border-white hover:border-gray-900 focus:border-gray-900")
+                      ? "opacity-50 cursor-not-allowed"
+                      : " border-0 border-white hover:border-gray-900 focus:border-gray-900")
                   }
                   type="datetime-local"
                   name="final_datetime"
@@ -624,42 +618,38 @@ const SearchInspections = () => {
                 <Select
                   classNamePrefix="react-select"
                   is
-                  styles={
-                    {
-                      control: (base, state) => ({
-                        ...base,
-                        height: "58px",
-                        border: "0",
-                        borderRadius: "0.75rem",
-                        backgroundColor: "#F3F4F6",
-                      }),
-                      placeholder: (base, state) => ({
-                        ...base,
-                        display: "none",
-                      }),
-                      indicatorSeparator: (base, state) => ({
-                        ...base,
-                        color: "#000",
-                        backgroundColor: "#000",
-                      }),
-                      dropdownIndicator: (base, state) => ({
-                        ...base,
-                        color: "#000",
-                      }),
-                    }
-                  }
+                  styles={{
+                    control: (base, state) => ({
+                      ...base,
+                      height: "58px",
+                      border: "0",
+                      borderRadius: "0.75rem",
+                      backgroundColor: "#F3F4F6",
+                    }),
+                    placeholder: (base, state) => ({
+                      ...base,
+                      display: "none",
+                    }),
+                    indicatorSeparator: (base, state) => ({
+                      ...base,
+                      color: "#000",
+                      backgroundColor: "#000",
+                    }),
+                    dropdownIndicator: (base, state) => ({
+                      ...base,
+                      color: "#000",
+                    }),
+                  }}
                   className={
                     "w-full font-normal bg-gray-100 rounded-xl transition duration-150 ease-out " +
                     (formikSearchInspections.touched.unit_name &&
-                      formikSearchInspections.errors.unit_name
+                    formikSearchInspections.errors.unit_name
                       ? " border-2 border-red-500"
                       : false
-                        ? "opacity-50 cursor-not-allowed"
-                        : " border-0 border-white hover:border-gray-900 focus:border-gray-900")
+                      ? "opacity-50 cursor-not-allowed"
+                      : " border-0 border-white hover:border-gray-900 focus:border-gray-900")
                   }
-                  options={
-                    unitsSelect
-                  }
+                  options={unitsSelect}
                   getOptionLabel={(option) => option.name}
                   getOptionValue={(option) => option.name}
                   onChange={(option) => {
