@@ -363,16 +363,6 @@ const InitialInspections = () => {
                                       </h6>
                                     </div>
                                   </div>
-                                  <div className="relative mb-4">
-                                    <span className="absolute inline-flex h-6 w-6 items-center justify-center rounded-full bg-solgas-primary p-4 text-center text-base font-semibold text-white shadow">
-                                      M
-                                    </span>
-                                    <div className="ml-12 w-auto py-2">
-                                      <h6 className="text-sm font-semibold text-blue-900">
-                                        {initialInspection?.modified}
-                                      </h6>
-                                    </div>
-                                  </div>
                                   <div className="relative">
                                     <span className="absolute inline-flex h-6 w-6 items-center justify-center rounded-full bg-solgas-primary p-4 text-center text-base font-semibold text-white shadow">
                                       C
