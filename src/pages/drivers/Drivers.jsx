@@ -9,30 +9,31 @@ import { useFormik } from "formik";
 import { AgGridReact } from "ag-grid-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createDriver, deleteDriver, getDriverById, getDrivers, updateDriver } from "../../features/driverSlice";
+import {
+  createDriver,
+  deleteDriver,
+  getDriverById,
+  getDrivers,
+  updateDriver,
+} from "../../features/driverSlice";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
+import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
+import { AG_GRID_LOCALE_ES } from "../../i18n/agGridLocale.es";
 
 const People = () => {
-
   const gridRef = useRef();
   const dispatch = useDispatch();
 
   const [showModal, setShowModal] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
 
-  const {
-    drivers,
-    driver,
-    error,
-    is_saving,
-    loading_drivers,
-    loading_driver,
-  } = useSelector(state => ({
-    ...state.drivers,
-  }));
+  const { drivers, driver, error, is_saving, loading_drivers, loading_driver } =
+    useSelector((state) => ({
+      ...state.drivers,
+    }));
 
   const columnDefs = useMemo(() => {
     return [
@@ -107,18 +108,17 @@ const People = () => {
                     if (result.isConfirmed) {
                       dispatch(deleteDriver(value));
                     }
-                  }
-                  );
+                  });
                 }}
               >
                 <TrashIcon className="h-6 w-6" />
               </button>
             </div>
           );
-        }
-      }
+        },
+      },
     ];
-  })
+  });
 
   const defaultColDef = useMemo(() => {
     return {
@@ -128,22 +128,26 @@ const People = () => {
     };
   });
 
+  const localeText = useMemo(() => {
+    return AG_GRID_LOCALE_ES;
+  }, []);
+
   const showAddPersonalInformationModal = () => {
     setShowModal(true);
-  }
+  };
 
   const showEditPersonalInformationModal = (id) => {
     setShowModalEdit(true);
     dispatch(getDriverById(id));
-  }
+  };
 
   const closeAddPersonalInformationModal = () => {
     setShowModal(false);
-  }
+  };
 
   const closeEditPersonalInformationModal = () => {
     setShowModalEdit(false);
-  }
+  };
 
   const formikCreateDriver = useFormik({
     initialValues: {
@@ -153,15 +157,21 @@ const People = () => {
       driver_license_expiration_date: "",
     },
     validationSchema: Yup.object({
-      id_number: Yup.string().required("El número de identificación es requerido")
-        .matches(/^[0-9]+$/, "El número de identificación solo puede contener números"),
+      id_number: Yup.string()
+        .required("El número de identificación es requerido")
+        .matches(
+          /^[0-9]+$/,
+          "El número de identificación solo puede contener números"
+        ),
       firstname: Yup.string().required("El nombre es requerido"),
       lastname: Yup.string().required("El apellido es requerido"),
-      driver_license_expiration_date: Yup.string().required("La fecha de expiración de la licencia es requerida"),
+      driver_license_expiration_date: Yup.string().required(
+        "La fecha de expiración de la licencia es requerida"
+      ),
     }),
-    onSubmit: values => {
+    onSubmit: (values) => {
       dispatch(createDriver(values));
-    }
+    },
   });
 
   const formikUpdateDriver = useFormik({
@@ -173,14 +183,18 @@ const People = () => {
       driver_license_expiration_date: "",
     },
     validationSchema: Yup.object({
-      id_number: Yup.string().required("El número de identificación es requerido"),
+      id_number: Yup.string().required(
+        "El número de identificación es requerido"
+      ),
       firstname: Yup.string().required("El nombre es requerido"),
       lastname: Yup.string().required("El apellido es requerido"),
-      driver_license_expiration_date: Yup.string().required("La fecha de expiración de la licencia es requerida"),
+      driver_license_expiration_date: Yup.string().required(
+        "La fecha de expiración de la licencia es requerida"
+      ),
     }),
-    onSubmit: values => {
-      dispatch(updateDriver(values))
-    }
+    onSubmit: (values) => {
+      dispatch(updateDriver(values));
+    },
   });
 
   useEffect(() => {
@@ -193,8 +207,9 @@ const People = () => {
       id_number: driver?.id_number || "",
       firstname: driver?.firstname || "",
       lastname: driver?.lastname || "",
-      driver_license_expiration_date: driver?.driver_license_expiration_date || "",
-    })
+      driver_license_expiration_date:
+        driver?.driver_license_expiration_date || "",
+    });
   }, [driver]);
 
   useEffect(() => {
@@ -246,11 +261,11 @@ const People = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikCreateDriver.touched.id_number &&
                           formikCreateDriver.errors.id_number) ||
-                          error?.errors?.id_number
+                        error?.errors?.id_number
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="id_number"
@@ -266,7 +281,7 @@ const People = () => {
                     />
                     {(formikCreateDriver.touched.id_number &&
                       formikCreateDriver.errors.id_number) ||
-                      error?.errors?.id_number ? (
+                    error?.errors?.id_number ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikCreateDriver.errors.id_number ||
                           error?.errors?.id_number[0]}
@@ -288,11 +303,11 @@ const People = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikCreateDriver.touched.firstname &&
                           formikCreateDriver.errors.firstname) ||
-                          error?.errors?.name
+                        error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="firstname"
@@ -308,7 +323,7 @@ const People = () => {
                     />
                     {(formikCreateDriver.touched.firstname &&
                       formikCreateDriver.errors.firstname) ||
-                      error?.errors?.firstname ? (
+                    error?.errors?.firstname ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikCreateDriver.errors.firstname ||
                           error?.errors?.firstname[0]}
@@ -330,11 +345,11 @@ const People = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikCreateDriver.touched.lastname &&
                           formikCreateDriver.errors.lastname) ||
-                          error?.errors?.name
+                        error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="lastname"
@@ -350,7 +365,7 @@ const People = () => {
                     />
                     {(formikCreateDriver.touched.lastname &&
                       formikCreateDriver.errors.lastname) ||
-                      error?.errors?.lastname ? (
+                    error?.errors?.lastname ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikCreateDriver.errors.lastname ||
                           error?.errors?.lastname[0]}
@@ -374,11 +389,11 @@ const People = () => {
                           .driver_license_expiration_date &&
                           formikCreateDriver.errors
                             .driver_license_expiration_date) ||
-                          error?.errors?.name
+                        error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="date"
                       name="driver_license_expiration_date"
@@ -396,7 +411,7 @@ const People = () => {
                       .driver_license_expiration_date &&
                       formikCreateDriver.errors
                         .driver_license_expiration_date) ||
-                      error?.errors?.driver_license_expiration_date ? (
+                    error?.errors?.driver_license_expiration_date ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikCreateDriver.errors
                           .driver_license_expiration_date ||
@@ -457,11 +472,11 @@ const People = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikUpdateDriver.touched.id_number &&
                           formikUpdateDriver.errors.id_number) ||
-                          error?.errors?.id_number
+                        error?.errors?.id_number
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="id_number"
@@ -478,7 +493,7 @@ const People = () => {
                     />
                     {(formikUpdateDriver.touched.id_number &&
                       formikUpdateDriver.errors.id_number) ||
-                      error?.errors?.id_number ? (
+                    error?.errors?.id_number ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikUpdateDriver.errors.id_number ||
                           error?.errors?.id_number[0]}
@@ -500,11 +515,11 @@ const People = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikUpdateDriver.touched.firstname &&
                           formikUpdateDriver.errors.firstname) ||
-                          error?.errors?.name
+                        error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="firstname"
@@ -521,7 +536,7 @@ const People = () => {
                     />
                     {(formikUpdateDriver.touched.firstname &&
                       formikUpdateDriver.errors.firstname) ||
-                      error?.errors?.firstname ? (
+                    error?.errors?.firstname ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikUpdateDriver.errors.firstname ||
                           error?.errors?.firstname[0]}
@@ -543,11 +558,11 @@ const People = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikUpdateDriver.touched.lastname &&
                           formikUpdateDriver.errors.lastname) ||
-                          error?.errors?.name
+                        error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="lastname"
@@ -564,7 +579,7 @@ const People = () => {
                     />
                     {(formikUpdateDriver.touched.lastname &&
                       formikUpdateDriver.errors.lastname) ||
-                      error?.errors?.lastname ? (
+                    error?.errors?.lastname ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikUpdateDriver.errors.lastname ||
                           error?.errors?.lastname[0]}
@@ -588,11 +603,11 @@ const People = () => {
                           .driver_license_expiration_date &&
                           formikUpdateDriver.errors
                             .driver_license_expiration_date) ||
-                          error?.errors?.name
+                        error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="date"
                       name="driver_license_expiration_date"
@@ -613,7 +628,7 @@ const People = () => {
                       .driver_license_expiration_date &&
                       formikUpdateDriver.errors
                         .driver_license_expiration_date) ||
-                      error?.errors?.driver_license_expiration_date ? (
+                    error?.errors?.driver_license_expiration_date ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikUpdateDriver.errors
                           .driver_license_expiration_date ||
@@ -710,6 +725,7 @@ const People = () => {
               ref={gridRef}
               rowData={drivers}
               columnDefs={columnDefs}
+              localeText={localeText}
               pagination={true}
               defaultColDef={defaultColDef}
               overlayLoadingTemplate={
@@ -723,6 +739,6 @@ const People = () => {
       </main>
     </>
   );
-}
+};
 
-export default People
+export default People;

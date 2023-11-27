@@ -10,10 +10,12 @@ import {
 } from "../../features/initialInspectionSlice";
 import ImageGallery from "react-image-gallery";
 import "leaflet/dist/leaflet.css";
+import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "react-image-gallery/styles/css/image-gallery.css";
 import { host } from "../../constants";
+import { AG_GRID_LOCALE_ES } from "../../i18n/agGridLocale.es";
 
 function renderItem(item) {
   return (
@@ -115,6 +117,10 @@ const InitialInspections = () => {
       filter: true,
     };
   });
+
+  const localeText = useMemo(() => {
+    return AG_GRID_LOCALE_ES;
+  }, []);
 
   const openModalViewInitialInspection = (id) => {
     dispatch(getInitialInspectionById(id));
@@ -507,6 +513,7 @@ const InitialInspections = () => {
             <AgGridReact
               ref={gridRef}
               rowData={initialInspections}
+              localeText={localeText}
               columnDefs={columnDefs}
               pagination={true}
               defaultColDef={defaultColDef}

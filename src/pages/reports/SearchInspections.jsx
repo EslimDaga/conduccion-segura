@@ -14,6 +14,7 @@ import * as Yup from "yup";
 import ImageGallery from "react-image-gallery";
 import Select from "react-select";
 import "leaflet/dist/leaflet.css";
+import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "react-image-gallery/styles/css/image-gallery.css";

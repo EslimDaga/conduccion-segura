@@ -7,17 +7,24 @@ import {
 import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import { AgGridReact } from "ag-grid-react";
-import { AG_GRID_LOCALE_ES } from "../../i18n/agGridLocale.es"
+import { AG_GRID_LOCALE_ES } from "../../i18n/agGridLocale.es";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { createUnit, deleteUnit, getUnitById, getUnits, resetErrors, updateUnit } from "../../features/unitSlice";
+import {
+  createUnit,
+  deleteUnit,
+  getUnitById,
+  getUnits,
+  resetErrors,
+  updateUnit,
+} from "../../features/unitSlice";
 import * as Yup from "yup";
 import Swal from "sweetalert2";
+import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 
 const Units = () => {
-
   const gridRef = useRef();
 
   const dispatch = useDispatch();
@@ -25,15 +32,11 @@ const Units = () => {
   const [showModal, setShowModal] = useState(false);
   const [showModalEdit, setShowModalEdit] = useState(false);
 
-  const {
-    units,
-    unit,
-    error,
-    is_saving,
-    loading_units
-  } = useSelector(state => ({
-    ...state.units,
-  }));
+  const { units, unit, error, is_saving, loading_units } = useSelector(
+    (state) => ({
+      ...state.units,
+    })
+  );
 
   const columnDefs = useMemo(() => {
     return [
@@ -50,7 +53,7 @@ const Units = () => {
         cellStyle: { textAlign: "center" },
         cellRenderer: (params) => {
           return params?.value?.length > 0 ? params?.value : "Sin descripción";
-        }
+        },
       },
       {
         field: "last_odometer",
@@ -123,16 +126,15 @@ const Units = () => {
                     if (result.isConfirmed) {
                       dispatch(deleteUnit(value));
                     }
-                  }
-                  );
+                  });
                 }}
               >
                 <TrashIcon className="h-6 w-6" />
               </button>
             </div>
           );
-        }
-      }
+        },
+      },
     ];
   });
 
@@ -150,24 +152,24 @@ const Units = () => {
 
   const showAddUnitModal = () => {
     setShowModal(true);
-  }
+  };
 
   const showEditUnitModal = (id) => {
     setShowModalEdit(true);
-    dispatch(getUnitById(id))
-  }
+    dispatch(getUnitById(id));
+  };
 
   const closeAddUnitModal = () => {
     setShowModal(false);
     formikCreateUnit.resetForm();
     dispatch(resetErrors());
-  }
+  };
 
   const closeEditUnitModal = () => {
     setShowModalEdit(false);
     formikUpdateUnit.resetForm();
     dispatch(resetErrors());
-  }
+  };
 
   useEffect(() => {
     dispatch(getUnits());
@@ -186,10 +188,11 @@ const Units = () => {
       name: unit?.name || "",
       description: unit?.description || "",
       last_odometer: unit?.last_odometer || "",
-      technical_review_expiration_date: unit?.technical_review_expiration_date || "",
+      technical_review_expiration_date:
+        unit?.technical_review_expiration_date || "",
       soat_expiration_date: unit?.soat_expiration_date || "",
       insurance_expiration_date: unit?.insurance_expiration_date || "",
-    })
+    });
   }, [unit]);
 
   const formikCreateUnit = useFormik({
@@ -207,8 +210,12 @@ const Units = () => {
         .required("El nombre es obligatorio")
         .max(10, "El nombre debe tener menos de 10 caracteres"),
       technical_review_expiration_date: Yup.date()
-        .required("La fecha de vencimiento de la revisión técnica es obligatoria")
-        .typeError("La fecha de vencimiento de la revisión técnica debe ser una fecha"),
+        .required(
+          "La fecha de vencimiento de la revisión técnica es obligatoria"
+        )
+        .typeError(
+          "La fecha de vencimiento de la revisión técnica debe ser una fecha"
+        ),
       soat_expiration_date: Yup.date()
         .required("La fecha de vencimiento del SOAT es obligatoria")
         .typeError("La fecha de vencimiento del SOAT debe ser una fecha"),
@@ -216,17 +223,18 @@ const Units = () => {
         .required("La fecha de vencimiento del seguro es obligatoria")
         .typeError("La fecha de vencimiento del seguro debe ser una fecha"),
     }),
-    onSubmit: values => {
+    onSubmit: (values) => {
       const data = {
         name: values.name,
         description: values.description,
         last_odometer: 0,
-        technical_review_expiration_date: values.technical_review_expiration_date,
+        technical_review_expiration_date:
+          values.technical_review_expiration_date,
         soat_expiration_date: values.soat_expiration_date,
         insurance_expiration_date: values.insurance_expiration_date,
-      }
+      };
       dispatch(createUnit(data));
-    }
+    },
   });
 
   const formikUpdateUnit = useFormik({
@@ -307,11 +315,11 @@ const Units = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikCreateUnit.touched.name &&
                           formikCreateUnit.errors.name) ||
-                          error?.errors?.name
+                        error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="name"
@@ -327,7 +335,7 @@ const Units = () => {
                     />
                     {(formikCreateUnit.touched.name &&
                       formikCreateUnit.errors.name) ||
-                      error?.errors?.name ? (
+                    error?.errors?.name ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikCreateUnit.errors.name || error?.errors?.name[0]}
                       </span>
@@ -365,11 +373,11 @@ const Units = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         (formikCreateUnit.touched
                           .technical_review_expiration_date &&
-                          formikCreateUnit.errors.technical_review_expiration_date
+                        formikCreateUnit.errors.technical_review_expiration_date
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="date"
                       name="technical_review_expiration_date"
@@ -378,10 +386,14 @@ const Units = () => {
                       onChange={formikCreateUnit.handleChange}
                       disabled={is_saving}
                     />
-                    {formikCreateUnit.touched.technical_review_expiration_date &&
-                      formikCreateUnit.errors.technical_review_expiration_date ? (
+                    {formikCreateUnit.touched
+                      .technical_review_expiration_date &&
+                    formikCreateUnit.errors.technical_review_expiration_date ? (
                       <span className="text-sm font-medium text-red-500">
-                        {formikCreateUnit.errors.technical_review_expiration_date}
+                        {
+                          formikCreateUnit.errors
+                            .technical_review_expiration_date
+                        }
                       </span>
                     ) : null}
                   </div>
@@ -398,13 +410,12 @@ const Units = () => {
                     <input
                       className={
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
-                        (formikCreateUnit.touched
-                          .soat_expiration_date &&
-                          formikCreateUnit.errors.soat_expiration_date
+                        (formikCreateUnit.touched.soat_expiration_date &&
+                        formikCreateUnit.errors.soat_expiration_date
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="date"
                       name="soat_expiration_date"
@@ -414,7 +425,7 @@ const Units = () => {
                       disabled={is_saving}
                     />
                     {formikCreateUnit.touched.soat_expiration_date &&
-                      formikCreateUnit.errors.soat_expiration_date ? (
+                    formikCreateUnit.errors.soat_expiration_date ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikCreateUnit.errors.soat_expiration_date}
                       </span>
@@ -433,13 +444,12 @@ const Units = () => {
                     <input
                       className={
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
-                        (formikCreateUnit.touched
-                          .insurance_expiration_date &&
-                          formikCreateUnit.errors.insurance_expiration_date
+                        (formikCreateUnit.touched.insurance_expiration_date &&
+                        formikCreateUnit.errors.insurance_expiration_date
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="date"
                       name="insurance_expiration_date"
@@ -449,7 +459,7 @@ const Units = () => {
                       disabled={is_saving}
                     />
                     {formikCreateUnit.touched.insurance_expiration_date &&
-                      formikCreateUnit.errors.insurance_expiration_date ? (
+                    formikCreateUnit.errors.insurance_expiration_date ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikCreateUnit.errors.insurance_expiration_date}
                       </span>
@@ -508,11 +518,11 @@ const Units = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikUpdateUnit.touched.name &&
                           formikUpdateUnit.errors.name) ||
-                          error?.errors?.name
+                        error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="name"
@@ -529,7 +539,7 @@ const Units = () => {
                     />
                     {(formikUpdateUnit.touched.name &&
                       formikUpdateUnit.errors.name) ||
-                      error?.errors?.name ? (
+                    error?.errors?.name ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikUpdateUnit.errors.name || error?.errors?.name[0]}
                       </span>
@@ -568,11 +578,11 @@ const Units = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         (formikUpdateUnit.touched
                           .technical_review_expiration_date &&
-                          formikUpdateUnit.errors.technical_review_expiration_date
+                        formikUpdateUnit.errors.technical_review_expiration_date
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="date"
                       name="technical_review_expiration_date"
@@ -580,12 +590,18 @@ const Units = () => {
                       autoComplete="off"
                       onChange={formikUpdateUnit.handleChange}
                       disabled={is_saving}
-                      value={formikUpdateUnit.values.technical_review_expiration_date}
+                      value={
+                        formikUpdateUnit.values.technical_review_expiration_date
+                      }
                     />
-                    {formikUpdateUnit.touched.technical_review_expiration_date &&
-                      formikUpdateUnit.errors.technical_review_expiration_date ? (
+                    {formikUpdateUnit.touched
+                      .technical_review_expiration_date &&
+                    formikUpdateUnit.errors.technical_review_expiration_date ? (
                       <span className="text-sm font-medium text-red-500">
-                        {formikUpdateUnit.errors.technical_review_expiration_date}
+                        {
+                          formikUpdateUnit.errors
+                            .technical_review_expiration_date
+                        }
                       </span>
                     ) : null}
                   </div>
@@ -602,13 +618,12 @@ const Units = () => {
                     <input
                       className={
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
-                        (formikUpdateUnit.touched
-                          .soat_expiration_date &&
-                          formikUpdateUnit.errors.soat_expiration_date
+                        (formikUpdateUnit.touched.soat_expiration_date &&
+                        formikUpdateUnit.errors.soat_expiration_date
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="date"
                       name="soat_expiration_date"
@@ -619,7 +634,7 @@ const Units = () => {
                       value={formikUpdateUnit.values.soat_expiration_date}
                     />
                     {formikUpdateUnit.touched.soat_expiration_date &&
-                      formikUpdateUnit.errors.soat_expiration_date ? (
+                    formikUpdateUnit.errors.soat_expiration_date ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikUpdateUnit.errors.soat_expiration_date}
                       </span>
@@ -638,13 +653,12 @@ const Units = () => {
                     <input
                       className={
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
-                        (formikUpdateUnit.touched
-                          .insurance_expiration_date &&
-                          formikUpdateUnit.errors.insurance_expiration_date
+                        (formikUpdateUnit.touched.insurance_expiration_date &&
+                        formikUpdateUnit.errors.insurance_expiration_date
                           ? " border-2 border-red-500"
                           : is_saving
-                            ? "opacity-50 cursor-not-allowed"
-                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          ? "opacity-50 cursor-not-allowed"
+                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="date"
                       name="insurance_expiration_date"
@@ -655,7 +669,7 @@ const Units = () => {
                       value={formikUpdateUnit.values.insurance_expiration_date}
                     />
                     {formikUpdateUnit.touched.insurance_expiration_date &&
-                      formikUpdateUnit.errors.insurance_expiration_date ? (
+                    formikUpdateUnit.errors.insurance_expiration_date ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikUpdateUnit.errors.insurance_expiration_date}
                       </span>
@@ -764,6 +778,6 @@ const Units = () => {
       </main>
     </>
   );
-}
+};
 
-export default Units
+export default Units;

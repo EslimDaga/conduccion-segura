@@ -8,9 +8,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { MapContainer, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import { AntPath, antPath } from "leaflet-ant-path";
 import "leaflet/dist/leaflet.css";
+import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import "react-image-gallery/styles/css/image-gallery.css";
+import { AG_GRID_LOCALE_ES } from "../../i18n/agGridLocale.es";
 
 const Routes = () => {
   const gridRef = useRef();
@@ -85,6 +87,10 @@ const Routes = () => {
       filter: true,
     };
   });
+
+  const localeText = useMemo(() => {
+    return AG_GRID_LOCALE_ES;
+  }, []);
 
   const openModalViewRoute = (id) => {
     dispatch(getRouteById(id));
@@ -530,6 +536,7 @@ const Routes = () => {
               ref={gridRef}
               rowData={routes}
               columnDefs={columnDefs}
+              localeText={localeText}
               pagination={true}
               defaultColDef={defaultColDef}
               overlayLoadingTemplate={

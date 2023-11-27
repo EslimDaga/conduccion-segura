@@ -9,6 +9,8 @@ import {
   getMaintenances,
 } from "../../features/maintenanceSlice";
 import ImageGallery from "react-image-gallery";
+import "ag-grid-enterprise";
+import { AG_GRID_LOCALE_ES } from "../../i18n/agGridLocale.es";
 
 function renderItem(item) {
   return (
@@ -112,6 +114,10 @@ const Maintenance = () => {
       filter: true,
     };
   });
+
+  const localeText = useMemo(() => {
+    return AG_GRID_LOCALE_ES;
+  }, []);
 
   const openModalViewMaintenance = (id) => {
     dispatch(getMaintenanceById(id));
@@ -411,6 +417,7 @@ const Maintenance = () => {
               rowData={maintenances}
               columnDefs={columnDefs}
               pagination={true}
+              localeText={localeText}
               defaultColDef={defaultColDef}
               overlayLoadingTemplate={
                 '<span className="ag-overlay-loading-center">Espere mientras se cargan sus filas</span>'
