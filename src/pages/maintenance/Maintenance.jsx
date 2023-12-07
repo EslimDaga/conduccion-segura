@@ -64,15 +64,6 @@ const Maintenance = () => {
         },
       },
       {
-        field: "odometer",
-        filter: true,
-        headerName: "Odómetro",
-        cellStyle: { textAlign: "center" },
-        cellRenderer: ({ value }) => {
-          return value + " km";
-        },
-      },
-      {
         field: "next_maintenance_odometer",
         filter: true,
         headerName: "Próximo odómetro de mantenimiento",
