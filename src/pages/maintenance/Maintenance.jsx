@@ -73,6 +73,12 @@ const Maintenance = () => {
         },
       },
       {
+        field: "created",
+        filter: true,
+        headerName: "Fecha de creación",
+        cellStyle: { textAlign: "center" },
+      },
+      {
         field: "id",
         filter: false,
         headerName: "Acciones",
