@@ -17,6 +17,9 @@ import "react-image-gallery/styles/css/image-gallery.css";
 import { host } from "../../constants";
 import { AG_GRID_LOCALE_ES } from "../../i18n/agGridLocale.es";
 
+import icon from "leaflet/dist/images/marker-icon.png";
+import iconShadow from "leaflet/dist/images/marker-shadow.png";
+
 function renderItem(item) {
   return (
     <div className="image-gallery-image">
@@ -143,7 +146,12 @@ const InitialInspections = () => {
 
     map.setView(coords, 19);
 
-    const marker = new L.marker(coords);
+    const marker = new L.marker(coords, {
+      icon: L.icon({
+        iconUrl: icon,
+        shadowUrl: iconShadow,
+      }),
+    });
     marker.addTo(map);
 
     marker.bindPopup(initialInspection?.unit_name);
