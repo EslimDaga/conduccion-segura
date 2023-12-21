@@ -353,7 +353,7 @@ const Routes = () => {
                                           Longitud de Origen
                                         </p>
                                         <p className="text-xs text-gray-500">
-                                          {route?.source_latitude}
+                                          {route?.source_longitude}
                                         </p>
                                       </div>
                                     </div>
