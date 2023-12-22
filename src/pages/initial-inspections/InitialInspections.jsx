@@ -84,7 +84,7 @@ const InitialInspections = () => {
       {
         field: "created",
         filter: true,
-        headerName: "Creado",
+        headerName: "Fecha de Creación",
         cellStyle: { textAlign: "center" },
       },
       {

@@ -88,7 +88,7 @@ const SearchInspections = () => {
       {
         field: "created",
         filter: true,
-        headerName: "Creado",
+        headerName: "Fecha de Creación",
         cellStyle: { textAlign: "center" },
       },
       {
@@ -560,11 +560,11 @@ const SearchInspections = () => {
                   className={
                     "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                     (formikSearchInspections.touched.initial_datetime &&
-                    formikSearchInspections.errors.initial_datetime
+                      formikSearchInspections.errors.initial_datetime
                       ? " border-2 border-red-500"
                       : false
-                      ? "opacity-50 cursor-not-allowed"
-                      : " border-0 border-white hover:border-gray-900 focus:border-gray-900")
+                        ? "opacity-50 cursor-not-allowed"
+                        : " border-0 border-white hover:border-gray-900 focus:border-gray-900")
                   }
                   type="datetime-local"
                   name="initial_datetime"
@@ -585,11 +585,11 @@ const SearchInspections = () => {
                   className={
                     "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                     (formikSearchInspections.touched.final_datetime &&
-                    formikSearchInspections.errors.final_datetime
+                      formikSearchInspections.errors.final_datetime
                       ? " border-2 border-red-500"
                       : false
-                      ? "opacity-50 cursor-not-allowed"
-                      : " border-0 border-white hover:border-gray-900 focus:border-gray-900")
+                        ? "opacity-50 cursor-not-allowed"
+                        : " border-0 border-white hover:border-gray-900 focus:border-gray-900")
                   }
                   type="datetime-local"
                   name="final_datetime"
@@ -634,11 +634,11 @@ const SearchInspections = () => {
                   className={
                     "w-full font-normal bg-gray-100 rounded-xl transition duration-150 ease-out " +
                     (formikSearchInspections.touched.unit_name &&
-                    formikSearchInspections.errors.unit_name
+                      formikSearchInspections.errors.unit_name
                       ? " border-2 border-red-500"
                       : false
-                      ? "opacity-50 cursor-not-allowed"
-                      : " border-0 border-white hover:border-gray-900 focus:border-gray-900")
+                        ? "opacity-50 cursor-not-allowed"
+                        : " border-0 border-white hover:border-gray-900 focus:border-gray-900")
                   }
                   options={unitsSelect}
                   getOptionLabel={(option) => option.name}

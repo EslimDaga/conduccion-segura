@@ -70,7 +70,7 @@ const People = () => {
       {
         field: "created",
         filter: true,
-        headerName: "Creado",
+        headerName: "Fecha de Creación",
         cellStyle: { textAlign: "center" },
       },
       {
@@ -261,11 +261,11 @@ const People = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikCreateDriver.touched.id_number &&
                           formikCreateDriver.errors.id_number) ||
-                        error?.errors?.id_number
+                          error?.errors?.id_number
                           ? " border-2 border-red-500"
                           : is_saving
-                          ? "opacity-50 cursor-not-allowed"
-                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="id_number"
@@ -281,7 +281,7 @@ const People = () => {
                     />
                     {(formikCreateDriver.touched.id_number &&
                       formikCreateDriver.errors.id_number) ||
-                    error?.errors?.id_number ? (
+                      error?.errors?.id_number ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikCreateDriver.errors.id_number ||
                           error?.errors?.id_number[0]}
@@ -303,11 +303,11 @@ const People = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikCreateDriver.touched.firstname &&
                           formikCreateDriver.errors.firstname) ||
-                        error?.errors?.name
+                          error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                          ? "opacity-50 cursor-not-allowed"
-                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="firstname"
@@ -323,7 +323,7 @@ const People = () => {
                     />
                     {(formikCreateDriver.touched.firstname &&
                       formikCreateDriver.errors.firstname) ||
-                    error?.errors?.firstname ? (
+                      error?.errors?.firstname ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikCreateDriver.errors.firstname ||
                           error?.errors?.firstname[0]}
@@ -345,11 +345,11 @@ const People = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikCreateDriver.touched.lastname &&
                           formikCreateDriver.errors.lastname) ||
-                        error?.errors?.name
+                          error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                          ? "opacity-50 cursor-not-allowed"
-                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="lastname"
@@ -365,7 +365,7 @@ const People = () => {
                     />
                     {(formikCreateDriver.touched.lastname &&
                       formikCreateDriver.errors.lastname) ||
-                    error?.errors?.lastname ? (
+                      error?.errors?.lastname ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikCreateDriver.errors.lastname ||
                           error?.errors?.lastname[0]}
@@ -389,11 +389,11 @@ const People = () => {
                           .driver_license_expiration_date &&
                           formikCreateDriver.errors
                             .driver_license_expiration_date) ||
-                        error?.errors?.name
+                          error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                          ? "opacity-50 cursor-not-allowed"
-                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="date"
                       name="driver_license_expiration_date"
@@ -411,7 +411,7 @@ const People = () => {
                       .driver_license_expiration_date &&
                       formikCreateDriver.errors
                         .driver_license_expiration_date) ||
-                    error?.errors?.driver_license_expiration_date ? (
+                      error?.errors?.driver_license_expiration_date ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikCreateDriver.errors
                           .driver_license_expiration_date ||
@@ -472,11 +472,11 @@ const People = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikUpdateDriver.touched.id_number &&
                           formikUpdateDriver.errors.id_number) ||
-                        error?.errors?.id_number
+                          error?.errors?.id_number
                           ? " border-2 border-red-500"
                           : is_saving
-                          ? "opacity-50 cursor-not-allowed"
-                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="id_number"
@@ -493,7 +493,7 @@ const People = () => {
                     />
                     {(formikUpdateDriver.touched.id_number &&
                       formikUpdateDriver.errors.id_number) ||
-                    error?.errors?.id_number ? (
+                      error?.errors?.id_number ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikUpdateDriver.errors.id_number ||
                           error?.errors?.id_number[0]}
@@ -515,11 +515,11 @@ const People = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikUpdateDriver.touched.firstname &&
                           formikUpdateDriver.errors.firstname) ||
-                        error?.errors?.name
+                          error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                          ? "opacity-50 cursor-not-allowed"
-                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="firstname"
@@ -536,7 +536,7 @@ const People = () => {
                     />
                     {(formikUpdateDriver.touched.firstname &&
                       formikUpdateDriver.errors.firstname) ||
-                    error?.errors?.firstname ? (
+                      error?.errors?.firstname ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikUpdateDriver.errors.firstname ||
                           error?.errors?.firstname[0]}
@@ -558,11 +558,11 @@ const People = () => {
                         "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
                         ((formikUpdateDriver.touched.lastname &&
                           formikUpdateDriver.errors.lastname) ||
-                        error?.errors?.name
+                          error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                          ? "opacity-50 cursor-not-allowed"
-                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="text"
                       name="lastname"
@@ -579,7 +579,7 @@ const People = () => {
                     />
                     {(formikUpdateDriver.touched.lastname &&
                       formikUpdateDriver.errors.lastname) ||
-                    error?.errors?.lastname ? (
+                      error?.errors?.lastname ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikUpdateDriver.errors.lastname ||
                           error?.errors?.lastname[0]}
@@ -603,11 +603,11 @@ const People = () => {
                           .driver_license_expiration_date &&
                           formikUpdateDriver.errors
                             .driver_license_expiration_date) ||
-                        error?.errors?.name
+                          error?.errors?.name
                           ? " border-2 border-red-500"
                           : is_saving
-                          ? "opacity-50 cursor-not-allowed"
-                          : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                            ? "opacity-50 cursor-not-allowed"
+                            : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
                       }
                       type="date"
                       name="driver_license_expiration_date"
@@ -628,7 +628,7 @@ const People = () => {
                       .driver_license_expiration_date &&
                       formikUpdateDriver.errors
                         .driver_license_expiration_date) ||
-                    error?.errors?.driver_license_expiration_date ? (
+                      error?.errors?.driver_license_expiration_date ? (
                       <span className="text-sm font-medium text-red-500">
                         {formikUpdateDriver.errors
                           .driver_license_expiration_date ||
