@@ -276,6 +276,25 @@ const Routes = () => {
                       Detalles de la ruta
                     </a>
                   </li>
+                  <li className="-mb-px mr-2 last:mr-0 flex-auto text-center">
+                    <a
+                      className={
+                        "text-sm font-bold px-5 py-3 shadow-lg rounded block leading-normal " +
+                        (openTab === 3
+                          ? "text-white bg-solgas-primary"
+                          : "text-white-600 bg-white")
+                      }
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setOpenTab(3);
+                      }}
+                      data-toggle="tab"
+                      href="#link3"
+                      role="tablist"
+                    >
+                      Incidencias
+                    </a>
+                  </li>
                 </ul>
                 <div className="relative flex flex-col min-w-0 break-words bg-white w-full shadow-lg rounded">
                   <div className="px-4 py-0 flex-auto">
@@ -461,6 +480,49 @@ const Routes = () => {
                                         </p>
                                       </div>
                                     </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div
+                        className={openTab === 3 ? "block" : "hidden"}
+                        id="link3"
+                      >
+                        <div className="relative flex h-full flex-col overflow-hidden bg-white text-gray-600">
+                          <div className="flex-auto">
+                            <div className="relative flex flex-col justify-center">
+                              <div className="">
+                                <div className="flex-1 rounded-lg">
+                                  <h4 className="text-gray-900 font-bold">
+                                    Incidencias
+                                  </h4>
+                                  <div className="relative px-4">
+                                    <div className="absolute h-full border border-dashed border-opacity-20 border-secondary"></div>
+                                    {route?.incidents.length > 0 ? route.incidents.map((i) => (
+                                      <div className="flex items-center w-full my-6 -ml-1.5">
+                                        <div className="w-1/12 z-10">
+                                          <div className="w-3.5 h-3.5 bg-solgas-primary rounded-full"></div>
+                                        </div>
+                                        <div className="w-11/12">
+                                          <p className="text-sm font-medium">
+                                            Fecha y Hora de Origen
+                                          </p>
+                                          <p className="text-xs text-gray-500">
+                                            {i.datetime}
+                                          </p>
+                                          <br />
+                                          <p className="text-sm font-medium">
+                                            Tipo
+                                          </p>
+                                          <p className="text-xs text-gray-500">
+                                            {i.type}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    )) : "No se registran incidencias"}
                                   </div>
                                 </div>
                               </div>
