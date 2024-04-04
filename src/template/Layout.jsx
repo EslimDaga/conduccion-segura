@@ -1,7 +1,21 @@
-import { Fragment } from "react";
+import * as Yup from "yup";
+
+import {
+  ChartBarIcon,
+  ChevronDownIcon,
+  LogoutIcon,
+  MenuIcon,
+  UserCircleIcon,
+  UserIcon,
+  XIcon,
+} from "@heroicons/react/solid";
+import { Dialog, Menu, Popover, Transition } from "@headlessui/react";
+import { Fragment, useState } from "react";
 import { Link, Outlet } from "react-router-dom";
-import { Popover, Transition, Menu } from "@headlessui/react";
-import { LogoutIcon, MenuIcon, ChevronDownIcon, UserCircleIcon, UserIcon, XIcon, ChartBarIcon } from "@heroicons/react/solid";
+import toast, { Toaster } from "react-hot-toast";
+
+import { host } from "../constants";
+import { useFormik } from "formik";
 
 const solutions = [
   {
@@ -14,8 +28,178 @@ const solutions = [
 ];
 
 const Layout = () => {
+  let [isOpen, setIsOpen] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+    fetch(`${host}/web/api/mails/get-mail-config/`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${JSON.parse(localStorage.getItem("user")).access}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        formikCreateDriver.setFieldValue("firstname", data.mails.join(","));
+        formikCreateDriver.setFieldValue(
+          "mail_notification",
+          data.mail_notification
+        );
+      });
+  }
+
+  const formikCreateDriver = useFormik({
+    initialValues: {
+      firstname: "",
+      mail_notification: false,
+    },
+    validationSchema: Yup.object({
+      firstname: Yup.string().required("Los correos son requerido"),
+    }),
+    onSubmit: (values) => {
+      //Separar los correos por coma y eliminar los espacios
+      const mails = values.firstname.split(",").map((mail) => mail.trim());
+      console.log(mails);
+      fetch(`${host}/web/api/mails/update-mail-config/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `JWT ${
+            JSON.parse(localStorage.getItem("user")).access
+          }`,
+        },
+        body: JSON.stringify({
+          mail_notification: values.mail_notification,
+          mails: mails,
+        }),
+      }).then((response) => {
+        if (response.status === 200) {
+          closeModal();
+          toast.success("Configuración de correos actualizada");
+        }
+      });
+    },
+  });
+
+  const error = false;
+  const is_saving = false;
+
   return (
     <main className="flex flex-col h-screen">
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={closeModal}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black/25" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                  <Dialog.Title
+                    as="h3"
+                    className="text-lg font-medium leading-6 text-gray-900 pb-5"
+                  >
+                    Notificaciones
+                  </Dialog.Title>
+                  <form onSubmit={formikCreateDriver.handleSubmit}>
+                    <div className="space-y-6">
+                      <div>
+                        <label
+                          htmlFor="firstname"
+                          className="block text-gray-700 dark:text-white font-medium mb-2"
+                        >
+                          Correos{" "}
+                          <span className="text-md font-normal text-red-500">
+                            *
+                          </span>
+                        </label>
+                        <textarea
+                          className={
+                            "w-full font-normal px-4 py-4 bg-gray-100 rounded-xl transition duration-150 ease-out " +
+                            ((formikCreateDriver.touched.firstname &&
+                              formikCreateDriver.errors.firstname) ||
+                            error?.errors?.name
+                              ? " border-2 border-red-500"
+                              : is_saving
+                              ? "opacity-50 cursor-not-allowed"
+                              : " border-2 border-white hover:border-gray-900 focus:border-gray-900")
+                          }
+                          rows={4}
+                          type="text"
+                          name="firstname"
+                          value={formikCreateDriver.values.firstname}
+                          id="firstname"
+                          autoComplete="off"
+                          onChange={(e) => {
+                            formikCreateDriver.handleChange(e);
+                            if (error?.errors?.firstname) {
+                              dispatch(resetErrors());
+                            }
+                          }}
+                          disabled={is_saving}
+                        />
+                        {(formikCreateDriver.touched.firstname &&
+                          formikCreateDriver.errors.firstname) ||
+                        error?.errors?.firstname ? (
+                          <span className="text-sm font-medium text-red-500">
+                            {formikCreateDriver.errors.firstname ||
+                              error?.errors?.firstname[0]}
+                          </span>
+                        ) : null}
+                      </div>
+                      <div className="flex items-center">
+                        <input
+                          id="mail_notification"
+                          name="mail_notification"
+                          onChange={formikCreateDriver.handleChange}
+                          checked={formikCreateDriver.values.mail_notification}
+                          type="checkbox"
+                          className="h-4 w-4 bg-gray-100 rounded transition duration-150 ease-out"
+                        />
+                        <label
+                          htmlFor="mail_notification"
+                          className="ml-2 block text-sm text-gray-900"
+                        >
+                          Enviar notificación
+                        </label>
+                      </div>
+                      <button
+                        className="bg-solgas-primary text-white active:bg-solgas-secondary text-base font-semibold px-4 py-4 rounded-xl hover:shadow-lg outline-none focus:outline-none w-full"
+                        style={{ transition: "all .15s ease" }}
+                        type="submit"
+                      >
+                        Crear
+                      </button>
+                    </div>
+                  </form>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
       <Popover className="flex-1 fixed w-full shadow-lg z-10">
         <div className="mx-auto px-6">
           <div className="flex items-center justify-between border-gray-100 py-6 lg:py-5">
@@ -93,14 +277,29 @@ const Layout = () => {
                           </Link>
                         </Menu.Item>
                         <Menu.Item>
-                          <Link to="/maintenance" className="text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                          <Link
+                            to="/maintenance"
+                            className="text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100"
+                          >
                             Mantenimientos
                           </Link>
                         </Menu.Item>
                         <Menu.Item>
-                          <Link to="/routes" className="text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100">
+                          <Link
+                            to="/routes"
+                            className="text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100"
+                          >
                             Rutas
                           </Link>
+                        </Menu.Item>
+                        <Menu.Item>
+                          <button
+                            type="button"
+                            onClick={openModal}
+                            className="text-gray-900 group flex w-full items-center rounded-md px-2 py-2 text-sm hover:bg-gray-100"
+                          >
+                            Emails
+                          </button>
                         </Menu.Item>
                       </div>
                     </Menu.Items>
@@ -220,8 +419,9 @@ const Layout = () => {
         </Transition>
       </Popover>
       <Outlet />
+      <Toaster position="top-center" reverseOrder={false} />
     </main>
   );
-}
+};
 
 export default Layout;
